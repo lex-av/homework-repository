@@ -1,6 +1,4 @@
-import pytest
-
-from check_fibonacci import check_fibonacci
+from check_fib.check_fibonacci import check_fibonacci
 
 
 def test_single_nums_case():
@@ -18,7 +16,6 @@ def test_sequence_case():
     assert check_fibonacci([1, 1])
     assert check_fibonacci([1, 2])
     assert check_fibonacci([13, 21])
-    print("Subsequence case test successful")
 
 
 def test_long_sequence_case():
@@ -28,7 +25,6 @@ def test_long_sequence_case():
     assert check_fibonacci([3, 5, 8, 13, 21, 34])
     assert check_fibonacci([0, 1, 1, 2, 3, 5, 8])
     assert check_fibonacci([13, 21, 34])
-    print("Long subsequence case test successful")
 
 
 def test_wrong_sequence_case():
@@ -38,4 +34,3 @@ def test_wrong_sequence_case():
     assert not check_fibonacci([3, 5, 13, 13, 21, 34])
     assert not check_fibonacci([0, 1, 1, 0, 3, 5, 8])
     assert not check_fibonacci([13, 34, 21])
-    print("Wrong subsequence case test successful")

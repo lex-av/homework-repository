@@ -1,0 +1,22 @@
+import pytest
+
+from calc import check_power_of_2
+
+def test_positive_case():
+    """Testing that actual powers of 2 give True"""
+    assert check_power_of_2(2)
+    assert check_power_of_2(32)
+    assert check_power_of_2(64)
+    assert check_power_of_2(65536)
+    assert check_power_of_2(2**25)
+    print("Positive case test successful")
+    
+def test_negative_case():
+    """Testing that non-powers of 2 give False"""
+    assert not check_power_of_2(0)
+    assert not check_power_of_2(12)
+    assert not check_power_of_2(8 + 2)
+    assert not check_power_of_2(2**25 + 1)
+    assert not check_power_of_2(2**14 * 3)
+    print("Negative case test successful")
+

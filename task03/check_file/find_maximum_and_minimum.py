@@ -14,4 +14,11 @@ from typing import Tuple
 
 
 def find_maximum_and_minimum(file_name: str) -> Tuple[int, int]:
-    ...
+    data_lst = []
+    with open("file_name") as fi:
+        for line in fi:
+            data_lst.append(int(line.strip()))
+    return (min(data_lst), max(data_lst))
+
+
+print(find_maximum_and_minimum("src.txt"))

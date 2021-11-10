@@ -17,4 +17,3 @@ def test_negative_case():
     assert not check_power_of_2(8 + 2)
     assert not check_power_of_2(2**25 + 1)
     assert not check_power_of_2(2**14 * 3)
-

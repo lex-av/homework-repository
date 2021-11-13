@@ -130,3 +130,5 @@ dmypy.json
 
 #PyCharm project files
 .idea/
+
+homework2/tasks/hw1/data.txt

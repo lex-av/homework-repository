@@ -14,14 +14,15 @@ assert combinations([1, 2], [3, 4]) == [
 """
 
 
+from itertools import product
 from typing import Any, List
 
 
-def combinations(*args: List[Any]) -> List[List]:
-    """Sample"""
-
-    return [args]
+def combinations(*args: List[Any]) -> List[Any]:
+    """Itertools do all the work"""
+    combos = list(product(*args))
+    return combos
 
 
 if __name__ == '__main__':
-    combinations()
+    combinations([1, 2], [3, 4])

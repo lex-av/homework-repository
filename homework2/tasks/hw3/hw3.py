@@ -25,4 +25,4 @@ def combinations(*args: List[Any]) -> List[Any]:
 
 
 if __name__ == '__main__':
-    combinations([1, 2], [3, 4])
+    combinations([1, 2], [3, 4], [5, 6], [7, 8])

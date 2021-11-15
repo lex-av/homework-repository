@@ -11,12 +11,19 @@ assert = custom_range(string.ascii_lowercase, 'p', 'g', -2) == ['p', 'n', 'l', '
 """
 
 
-# from typing import Iterable, Any, List
+from io import TextIOWrapper
+from typing import Any, List
 
 
-def custom_range(iterable, *args):
-
-    return iterable, args
+def custom_range(iterable: Any, *args: int) -> List:
+    if isinstance(iterable, TextIOWrapper):
+        iterable = list(map(str.strip, iterable.readlines()))
+    else:
+        iterable = list(iterable)
+    if args:
+        return iterable[args[0]:args[1]:args[2]]
+    else:
+        return iterable
 
 
 if __name__ == '__main__':

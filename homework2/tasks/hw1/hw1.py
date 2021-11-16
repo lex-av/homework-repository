@@ -82,5 +82,14 @@ def count_non_ascii_chars(file_path: str) -> int:
 
     return len(chars)
 
-# def get_most_common_non_ascii_char(file_path: str) -> str:
-#     ...
+
+def get_most_common_non_ascii_char(file_path: str) -> str:
+    # Regex pattern
+    pattern = r"[\u0080-\uFFFF]"
+
+    fi = open(file_path, encoding="unicode-escape")
+    chars = re.findall(pattern, fi.read())
+    fi.close()
+    rarest_symbol = Counter(chars).most_common()[-1][0]
+
+    return rarest_symbol

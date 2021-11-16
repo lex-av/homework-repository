@@ -85,11 +85,14 @@ def count_non_ascii_chars(file_path: str) -> int:
     #             if not elem.isascii():
     #                 chars.append(elem)
 
-    with open(file_path, encoding="unicode") as fi:
-        for line in fi:
-            line_chars = re.findall(pattern, line.strip())
-            if line_chars:
-                chars += line_chars
+    # with open(file_path, encoding="unicode") as fi:
+    fi = open(file_path, encoding="unicode-escape")
+    for line in fi.readlines():
+        line_chars = re.findall(pattern, line.strip())
+        if line_chars:
+            chars += line_chars
+
+    fi.close()
 
     return len(chars)
 

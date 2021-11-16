@@ -73,29 +73,14 @@ def count_punctuation_chars(file_path: str) -> int:
 def count_non_ascii_chars(file_path: str) -> int:
     """Search for non-ascii chars"""
 
-    # Regex pattern for chars search and chars accumulator
+    # Regex pattern
     pattern = r"[\u0080-\uFFFF]"
-    chars = []
 
-    # with open(file_path) as fi:
-    #     for line in fi:
-    #         for elem in line:
-    #             if ord(elem) > 127:
-    #                 chars.append(elem)
-    #             if not elem.isascii():
-    #                 chars.append(elem)
-
-    # with open(file_path, encoding="unicode") as fi:
     fi = open(file_path, encoding="unicode-escape")
-    for line in fi.readlines():
-        line_chars = re.findall(pattern, line.strip())
-        if line_chars:
-            chars += line_chars
-
+    chars = re.findall(pattern, fi.read())
     fi.close()
 
     return len(chars)
-
 
 # def get_most_common_non_ascii_char(file_path: str) -> str:
 #     ...

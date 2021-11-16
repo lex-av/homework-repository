@@ -21,8 +21,4 @@ from typing import Any, List
 def combinations(*args: List[Any]) -> List[Any]:
     """Itertools do all the work"""
     combos = list(product(*args))
-    return combos
-
-
-if __name__ == '__main__':
-    combinations([1, 2], [3, 4], [5, 6], [7, 8])
+    return list(map(list, combos))

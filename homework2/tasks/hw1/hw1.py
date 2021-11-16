@@ -94,8 +94,5 @@ def count_non_ascii_chars(file_path: str) -> int:
     return len(chars)
 
 
-a = count_non_ascii_chars(r"data.txt")
-
-
 # def get_most_common_non_ascii_char(file_path: str) -> str:
 #     ...

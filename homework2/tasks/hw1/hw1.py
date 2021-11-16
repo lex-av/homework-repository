@@ -15,7 +15,8 @@ from typing import List
 
 
 def get_longest_diverse_words(file_path: str) -> List[str]:
-    """Using regex to find words, then sorting and set"""
+    """Using regex to find words, then sorting by two parameters to
+    find 10 longest words consisting from largest amount of unique symbols"""
 
     # Regex pattern for words search and words accumulator
     pattern = r"\b\w+\b"
@@ -29,13 +30,14 @@ def get_longest_diverse_words(file_path: str) -> List[str]:
                 words += re.findall(pattern, line.strip())
 
     # Sort words by  1) length and  2) unique numbers and get 10 last
-    words_len_sorted = sorted(words, key=lambda w: (len(w), len(set(w))))[-9:]
+    words_len_sorted = sorted(words, key=lambda w: (len(w), len(set(w))))[-10:]
 
     return words_len_sorted
 
 
 def get_rarest_char(file_path: str) -> str:
-    """Using regex to find words, then collections.Counter"""
+    """Using regex to find words, then collections.Counter
+    to find rarest"""
 
     # Words accumulator
     words = ""
@@ -55,7 +57,7 @@ def count_punctuation_chars(file_path: str) -> int:
     """Using regex to find chars, Counter to count rarest"""
 
     # Regex pattern for chars search and chars accumulator
-    pattern = r"[^a-zA-Z0-9_\\]"
+    pattern = r"[^a-zA-Z0-9_\\ ]{1}"
     p_chars = []
 
     # Read all p_chars line by line using regEx
@@ -68,9 +70,32 @@ def count_punctuation_chars(file_path: str) -> int:
     return len(p_chars)
 
 
-# def count_non_ascii_chars(file_path: str) -> int:
-#     ...
-#
-#
+def count_non_ascii_chars(file_path: str) -> int:
+    """Search for non-ascii chars"""
+
+    # Regex pattern for chars search and chars accumulator
+    pattern = r"[\u0080-\uFFFF]"
+    chars = []
+
+    # with open(file_path) as fi:
+    #     for line in fi:
+    #         for elem in line:
+    #             if ord(elem) > 127:
+    #                 chars.append(elem)
+    #             if not elem.isascii():
+    #                 chars.append(elem)
+
+    with open(file_path, encoding="unicode") as fi:
+        for line in fi:
+            line_chars = re.findall(pattern, line.strip())
+            if line_chars:
+                chars += line_chars
+
+    return len(chars)
+
+
+a = count_non_ascii_chars(r"data.txt")
+
+
 # def get_most_common_non_ascii_char(file_path: str) -> str:
 #     ...

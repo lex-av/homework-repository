@@ -12,10 +12,13 @@ assert = custom_range(string.ascii_lowercase, 'p', 'g', -2) == ['p', 'n', 'l', '
 
 
 from io import TextIOWrapper
-from typing import Any, AnyStr, List, Union
+from typing import AnyStr, List, Sequence, Union
 
 
-def custom_range(iterable: Any, *args: Union[int, AnyStr]) -> List:
+def custom_range(iterable: Sequence,
+                 start: Union[int, AnyStr] = None,
+                 stop: Union[int, AnyStr] = None,
+                 step: int = None) -> List:
     """Converts given iterable to [optionally sliced] list.
 
     Slicing pivots for file object corresponds to character
@@ -32,34 +35,29 @@ def custom_range(iterable: Any, *args: Union[int, AnyStr]) -> List:
     # If file object given
     if isinstance(iterable, TextIOWrapper):
         iterable = list(map(str.strip, iterable.readlines()))
-
-        if args:
-            return iterable[args[0]:args[1]:args[2]]
-        else:
-            return iterable
+        return iterable[start:stop:step]
 
     # Str object given
-    elif isinstance(iterable, str):
+    if isinstance(iterable, str):
         elems_to_indexes = dict(zip(list(iterable), range(len(iterable))))
+        elems_to_indexes[None] = None
         iterable = list(iterable)
 
-        if args:
-            # Slicing for str args
-            if isinstance(args[0], str) and isinstance(args[0], str) and isinstance(args[0], str):
-                return iterable[elems_to_indexes[args[0]]:elems_to_indexes[args[1]]:elems_to_indexes[args[2]]]
-            # Slicing for int args
-            elif isinstance(args[0], int) and isinstance(args[0], int) and isinstance(args[0], int):
-                return iterable[args[0]:args[1]:args[2]]
+        if isinstance(start, str) or start is None:
+            return iterable[elems_to_indexes[start]:elems_to_indexes[stop]:step]
+        elif isinstance(start, int) or start is None:
+            return iterable[start:stop:step]
         else:
             raise Exception("Got wrong args for slicing")
 
     # Tuple/list/Set/Iterator object given
     else:
         iterable = list(iterable)
-        if args:
-            return iterable[args[0]:args[1]:args[2]]
+
+        if isinstance(start, int) or start is None:
+            return iterable[start:stop:step]
         else:
-            return iterable
+            raise Exception("Got wrong args for slicing")
 
 
 if __name__ == '__main__':

@@ -28,11 +28,3 @@ def cache(func: Callable) -> Callable:
 
 def functional(a, b) -> int:
     return (a ** b) ** 2
-
-
-if __name__ == '__main__':
-    cache_func = cache(functional)
-    some = 100, 200
-    val_1 = cache_func(*some)
-    val_2 = cache_func(*some)
-    assert val_1 is val_2

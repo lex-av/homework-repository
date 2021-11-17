@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from ..pack_hw1.module_hw1 import *
+from ..pack_hw1.module_hw1 import (count_punctuation_chars,
+                                   get_longest_diverse_words, get_rarest_char)
 
 
 def test_longest_diverse_words_1():

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from hw2.hw2 import major_and_minor_elem
+from ..pack_hw2.module_hw2 import major_and_minor_elem
 
 
 def test_major_and_minor_elem():

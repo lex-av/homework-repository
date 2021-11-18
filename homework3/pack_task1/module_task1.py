@@ -24,34 +24,39 @@ f()
 """
 
 
-import time
+def parametrized(iters=2):
+
+    def outer_decorator(func):
+
+        def wrapper():
+            nonlocal iters
+            while iters != 0:
+                func()
+                iters -= 1
+                print(f"{iters} call left")
+
+        return wrapper
+    return outer_decorator
 
 
-def clock(func):
-    def clocked(*args, **kwargs):
-        t0 = time.time()
+def cache(times=3):
 
-        result = func(*args, **kwargs)  # вызов декорированной функции
+    def outer_decorator(func):
+        cached_values = {}
 
-        elapsed = time.time() - t0
-        name = func.__name__
-        arg_1st = []
-        if args:
-            arg_1st.append(', '.join(repr(arg) for arg in args))
-        if kwargs:
-            pairs = ['%s=%r' % (k, w) for k, w in sorted(kwargs.items())]
-            arg_1st.append(', '.join(pairs))
-        arg_str = ', '.join(arg_1st)
-        print('[%0.8fs] %s(%s) -> %r' % (elapsed, name, arg_str, result))
-        return result
-    return clocked
+        def wrapper(*args):
+            nonlocal times
 
+            if times != 0:
+                if args in cached_values:
+                    times -= 1
+                    return cached_values[args]
+                else:
+                    cached_values[args] = func(*args)
+                    return cached_values[args]
 
-@clock
-def fib(n):
-    if n < 2:
-        return n
-    return fib(n-2) + fib(n-1)
+            cached_values[args] = func(*args)
+            return cached_values[args]
 
-
-print('fib(20) =', fib(20))
+        return wrapper
+    return outer_decorator

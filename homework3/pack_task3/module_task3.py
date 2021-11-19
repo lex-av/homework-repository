@@ -30,8 +30,12 @@ def make_filter(**keywords):
     for key, value in keywords.items():
         def keyword_filter_func(data):
             # return _value[key] == value
-            return data[key] == value
+            if key in data:
+                return data[key] == value
+
+            return False
         filter_funcs.append(keyword_filter_func)
+
     return Filter(filter_funcs)
 
 
@@ -50,11 +54,11 @@ sample_data = [
      }
 ]
 
-# make_filter(name='polly', type='bird').apply(sample_data) should return only second entry from the list
+# make_filter(name='polly', type='bird').apply(sample_data_1) should return only second entry from the list
 
 # There are multiple bugs in this code. Find them all and write tests for faulty cases.
 
 
 if __name__ == '__main__':
-    print(make_filter(name='Bill').apply(sample_data))
+    print(make_filter(namee='Bill').apply(sample_data))
     print(make_filter(name='polly', type='bird').apply(sample_data))

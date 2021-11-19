@@ -24,21 +24,19 @@ import time
 from multiprocessing.pool import ThreadPool as Pool
 
 
-def slow_calculate(value):
-    """Some weird voodoo magic calculations"""
-    time.sleep(random.randint(1, 3))
-    data = hashlib.md5(str(value).encode()).digest()
-    return sum(struct.unpack('<' + 'B' * len(data), data))
+def multiprocess_calculate(input_data):
+    def slow_calculate(value):
+        """Some weird voodoo magic calculations"""
+        time.sleep(random.randint(1, 3))
+        data = hashlib.md5(str(value).encode()).digest()
+        return sum(struct.unpack('<' + 'B' * len(data), data))
 
+    with Pool(40) as p:
+        output = p.map(slow_calculate, input_data)
 
-def mul(value):
-    return value * 10
+    return output
 
 
 if __name__ == '__main__':
-    max_val = 500
-    nums = [i for i in range(max_val)]
-    with Pool(40) as pl:
-        output = pl.map(slow_calculate, nums)
-
+    print(multiprocess_calculate([i for i in range(500)]))
     print("ready")

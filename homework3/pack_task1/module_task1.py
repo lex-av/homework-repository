@@ -24,21 +24,6 @@ f()
 """
 
 
-def parametrized(iters=2):
-
-    def outer_decorator(func):
-
-        def wrapper():
-            nonlocal iters
-            while iters != 0:
-                func()
-                iters -= 1
-                print(f"{iters} call left")
-
-        return wrapper
-    return outer_decorator
-
-
 def cache(times=3):
 
     def outer_decorator(func):

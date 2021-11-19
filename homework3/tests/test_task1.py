@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from ..pack_task1.module_task1 import cache
+# from ..pack_task1.module_task1 import cache
 
 
 # Decorator to count tested function calls
@@ -14,19 +14,7 @@ def count_calls(func):
     return wrapper
 
 
-@cache()
-@count_calls
-def example_func():
-    return 5
-
-
-@cache
-def add_func(a, b):
-    return a + b
-
-
 def test_example_func():
-
     ...
 
 

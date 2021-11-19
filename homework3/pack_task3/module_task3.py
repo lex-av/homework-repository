@@ -28,8 +28,9 @@ def make_filter(**keywords):
     """
     filter_funcs = []
     for key, value in keywords.items():
-        def keyword_filter_func(_value):
-            return _value[key] == value
+        def keyword_filter_func(data):
+            # return _value[key] == value
+            return data[key] == value
         filter_funcs.append(keyword_filter_func)
     return Filter(filter_funcs)
 
@@ -55,5 +56,5 @@ sample_data = [
 
 
 if __name__ == '__main__':
-    print(make_filter(namee='Bill').apply(sample_data))
+    print(make_filter(name='Bill').apply(sample_data))
     print(make_filter(name='polly', type='bird').apply(sample_data))

@@ -18,9 +18,23 @@ You will learn:
 """
 
 
+import sys
+
+
 def my_precious_logger(text: str):
-    pass
+    """
+    Output incoming message to stderr if text
+    argument starts with 'error' and to stdout
+    otherwise
+    """
+
+    if text.lower().startswith("error"):
+        print(text, file=sys.stderr)
+    else:
+        sys.stdout.write(text + "\n")
 
 
 if __name__ == '__main__':
-    ...
+    my_precious_logger("error: file not found")
+    my_precious_logger("OK")
+    my_precious_logger("OK error")

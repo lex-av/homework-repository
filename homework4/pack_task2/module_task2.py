@@ -22,9 +22,25 @@ You will learn:
 """
 
 
+import urllib.request
+from collections import Counter
+
+
 def count_dots_on_i(url: str) -> int:
-    ...
+    """
+    Returns count of i symbols in html document. Will raise ValueError
+    on any network error
+    """
+    try:
+        file_html = urllib.request.urlopen(url)
+    except Exception:
+        raise ValueError(f"Unreachable {url}")
+
+    file_html = str(file_html.read())
+    count_i = Counter(file_html)['i']
+
+    return count_i
 
 
 if __name__ == '__main__':
-    ...
+    print(count_dots_on_i("https://example.com/"))

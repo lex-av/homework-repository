@@ -26,17 +26,24 @@ import urllib.request
 from collections import Counter
 
 
+def get_info_from_url(_url: str) -> str:
+    try:
+        file_html = urllib.request.urlopen(_url)
+    except Exception:
+        raise ValueError(f"Unreachable {_url}")
+
+    file_html = str(file_html.read())
+
+    return file_html
+
+
 def count_dots_on_i(url: str) -> int:
     """
     Returns count of i symbols in html document. Will raise ValueError
     on any network error
     """
-    try:
-        file_html = urllib.request.urlopen(url)
-    except Exception:
-        raise ValueError(f"Unreachable {url}")
 
-    file_html = str(file_html.read())
+    file_html = get_info_from_url(url)
     count_i = Counter(file_html)['i']
 
     return count_i

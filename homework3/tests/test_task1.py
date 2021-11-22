@@ -3,20 +3,14 @@
 # from ..pack_task1.module_task1 import cache
 
 
-# Decorator to count tested function calls
-def count_calls(func):
-
-    def wrapper(*args, **kwargs):
-        wrapper.calls_count += 1
-        func(*args, **kwargs)
-
-    wrapper.calls_count = 0
-    return wrapper
+# import pytest
+# from unittest import mock
+# from ..pack_task1.module_task1 import cache
 
 
-def test_example_func():
-    ...
+def example_func():
+    return 3
 
 
-def test_func_with_args():
+def test_cache():
     ...

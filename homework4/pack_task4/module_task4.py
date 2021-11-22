@@ -21,8 +21,31 @@ from typing import List
 
 
 def fizzbuzz(n: int) -> List[str]:
-    return [str(n)]
+    """
+    Returns a list of fizzbuzz numbers
+
+    >>> fizzbuzz(5)
+    ['1', '2', 'Fizz', '4', 'Buzz']
+
+    >>> fizzbuzz(1)
+    ['1']
+
+    >>> fizzbuzz(3)
+    ['1', '2', 'Fizz']
+    """
+    def fizzbuzz_replacer(num):
+        if num % 3 == 0:
+            return "Fizz"
+        if num % 5 == 0:
+            return "Buzz"
+
+        return num
+
+    fizzbuzz_numbers = list(map(fizzbuzz_replacer, list(i for i in range(1, n + 1))))
+    fizzbuzz_numbers = list(map(str, fizzbuzz_numbers))
+
+    return fizzbuzz_numbers
 
 
 if __name__ == '__main__':
-    ...
+    print(fizzbuzz(5))

@@ -30,7 +30,6 @@ def test_negative_case_read_magic_number(tmpdir, live_value, expected):
     negative_case_file = tmpdir.join('file.txt')
     negative_case_file.write(live_value)
     negative_result = read_magic_number(negative_case_file)
-
     assert negative_result == expected
 
 

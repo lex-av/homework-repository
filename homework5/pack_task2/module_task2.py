@@ -16,8 +16,23 @@ print(custom_sum.__original_func)  # <function custom_sum at <some_id>>
 import functools
 
 
+def parameters_capture(func):
+    f_name = func.__name__
+    f_doc = func.__doc__
+
+    def wrapper(*args, **kwargs):
+        func(*args, **kwargs)
+
+    wrapper.__original_func = func
+    wrapper.__name__ = f_name
+    wrapper.__doc__ = f_doc
+    return wrapper
+
+
 def print_result(func):
+
     # Place for new decorator
+    @parameters_capture
     def wrapper(*args, **kwargs):
         """Function-wrapper which print result of an original function"""
         result = func(*args, **kwargs)
@@ -39,7 +54,7 @@ if __name__ == "__main__":
 
     print(custom_sum.__doc__)
     print(custom_sum.__name__)
-    # without_print = custom_sum.__original_func
+    without_print = custom_sum.__original_func
 
     # the result returns without printing
-    # without_print(1, 2, 3, 4)
+    without_print(1, 2, 3, 4)

@@ -98,5 +98,5 @@ if __name__ == "__main__":
     print(oop_homework.deadline)  # 5 days, 0:00:00
 
     student.do_homework(oop_homework)
-    time.sleep(2)  # Need to wait a bit
+    time.sleep(2)  # Need to wait a bit for stability
     student.do_homework(expired_homework)  # You are late

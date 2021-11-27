@@ -7,26 +7,23 @@ Given four lists A, B, C, D of integer values,
 We guarantee, that all A, B, C, D have same length of N where 0 ≤ N ≤ 1000.
 """
 
-
+from itertools import product
 from typing import List
 
 
 def check_sum_of_four(a: List[int], b: List[int], c: List[int], d: List[int]) -> int:
-    """Use naive approach to find triplets and then
-    find quadruples, using search (standard or binary for example)"""
+    """Use itertools.product to find triplets and then
+    find quadruples, using search"""
 
-    quads = []
     quads_count = 0
+    triplets = product(a, b, c)
+    triplets_sums = list(map(sum, triplets))
 
-    for a_i in a:
-        for b_i in b:
-            for c_i in c:
-                triplet_sum = a_i + b_i + c_i
-                if -triplet_sum in d:
-                    quads_count += 1
-                    quads += [a_i, b_i, c_i, -triplet_sum]
+    for value in triplets_sums:
+        if -value in d:
+            quads_count += 1
 
-    return sum(quads)
+    return quads_count
 
 
 if __name__ == "__main__":
@@ -34,4 +31,4 @@ if __name__ == "__main__":
     lst_2 = [2, 3, 7, 8]
     lst_3 = [1, 4, 6, 10]
     lst_4 = [2, -4, -7, -9]
-    print(sum(check_sum_of_four(lst_1, lst_2, lst_3, lst_4)))
+    print(check_sum_of_four(lst_1, lst_2, lst_3, lst_4))

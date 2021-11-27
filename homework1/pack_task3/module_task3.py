@@ -1,4 +1,3 @@
-# Created by allex at 10.11.2021
 # -*- coding: utf-8 -*-
 """
 Write down the function, which reads input line-by-line, and find maximum and minimum values.
@@ -14,8 +13,25 @@ from typing import Tuple
 
 
 def find_maximum_and_minimum(file_name: str) -> Tuple[int, int]:
-    data_lst = []
+    """
+    Return maximum and minimum int from file. Each int
+    should be on a new line
+    """
+
+    min_value = float("inf")
+    max_value = -float("inf")
     with open(file_name) as fi:
         for line in fi:
-            data_lst.append(int(line.strip()))
-    return min(data_lst), max(data_lst)
+            current_value = int(line.strip())
+
+            if current_value < min_value:
+                min_value = current_value
+
+            if current_value > max_value:
+                max_value = current_value
+
+    return min_value, max_value
+
+
+if __name__ == "__main__":
+    ...

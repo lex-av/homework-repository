@@ -19,4 +19,4 @@ jobs:
           ls -la
           flake8 .
           isort --check .
-          py.test homework5/tests
+          py.test -v homework5/tests

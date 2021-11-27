@@ -26,11 +26,12 @@ def check_sum_of_four(a: List[int], b: List[int], c: List[int], d: List[int]) ->
                     quads_count += 1
                     quads += [a_i, b_i, c_i, -triplet_sum]
 
-    return quads
+    return sum(quads)
 
 
-lst_1 = [1, 4, 5, 6]
-lst_2 = [2, 3, 7, 8]
-lst_3 = [1, 4, 6, 10]
-lst_4 = [2, -4, -7, -9]
-print(sum(check_sum_of_four(lst_1, lst_2, lst_3, lst_4)))
+if __name__ == "__main__":
+    lst_1 = [1, 4, 5, 6]
+    lst_2 = [2, 3, 7, 8]
+    lst_3 = [1, 4, 6, 10]
+    lst_4 = [2, -4, -7, -9]
+    print(sum(check_sum_of_four(lst_1, lst_2, lst_3, lst_4)))

@@ -43,8 +43,48 @@ PEP8 соблюдать строго.
 """
 
 
-def functionality():
-    return
+import datetime
+
+
+class Student:
+    """Class for student definition"""
+
+    def __init__(self, last_name, first_name):
+        self.last_name = last_name
+        self.first_name = first_name
+
+    def do_homework(self, homework):
+        if homework.is_active():
+            return homework
+        print("You are late")
+        return None
+
+
+class Teacher:
+    """Class for teacher definition"""
+
+    def __init__(self, last_name, first_name):
+        self.last_name = last_name
+        self.first_name = first_name
+
+    def create_homework(self, text, deadline):
+        return Homework(text, deadline)
+
+
+class Homework:
+    """Class for homework definition and deadline check"""
+
+    def __init__(self, text, deadline):
+        self.text = text
+        self.deadline = deadline
+        self.created = datetime.datetime.now()
+
+    def is_active(self):
+        """Checks if homework task is still active and deadline isn't expired'"""
+        current_datetime = datetime.datetime.now()
+        if current_datetime <= self.created + datetime.timedelta(self.deadline):
+            return True
+        return False
 
 
 if __name__ == "__main__":

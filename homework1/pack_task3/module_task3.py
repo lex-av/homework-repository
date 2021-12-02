@@ -9,6 +9,7 @@ with open("some_file.txt") as fi:
     for line in fi:
         ...
 """
+import os
 from typing import Tuple
 
 
@@ -34,4 +35,4 @@ def find_maximum_and_minimum(file_name: str) -> Tuple[int, int]:
 
 
 if __name__ == "__main__":
-    ...
+    print(os.getcwd())

@@ -87,5 +87,15 @@ class Homework:
         return False
 
 
+class HomeworkResult:
+    """Class for homework results definition"""
+
+    def __init__(self, author, homework, solution):
+        self.homework = homework  # Add exception-logic here
+        self.solution = solution
+        self.author = author
+        self.created = homework.created
+
+
 if __name__ == "__main__":
     ...

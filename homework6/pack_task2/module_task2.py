@@ -46,26 +46,33 @@ PEP8 соблюдать строго.
 import datetime
 
 
-class Student:
+class HomeworkObjectError(Exception):
+    """Not Homework object given"""
+
+
+class DeadlineError(Exception):
+    """Homework deadline expired"""
+
+
+class Person:
+    """Basic parameters: FirstName and Lastname"""
+
+    def __init__(self, first_name, last_name):
+        self.last_name = last_name
+        self.first_name = first_name
+
+
+class Student(Person):
     """Class for student definition"""
 
-    def __init__(self, last_name, first_name):
-        self.last_name = last_name
-        self.first_name = first_name
-
-    def do_homework(self, homework):
+    def do_homework(self, homework, student_solution):
         if homework.is_active():
-            return homework
-        print("You are late")
-        return None
+            return HomeworkResult(self, homework, student_solution)
+        raise DeadlineError("You are late")
 
 
-class Teacher:
+class Teacher(Person):
     """Class for teacher definition"""
-
-    def __init__(self, last_name, first_name):
-        self.last_name = last_name
-        self.first_name = first_name
 
     def create_homework(self, text, deadline):
         return Homework(text, deadline)
@@ -88,14 +95,18 @@ class Homework:
 
 
 class HomeworkResult:
-    """Class for homework results definition"""
+    """
+    Class for homework results definition.
+    Has to be returned by do_homework method in Student
+    """
 
     def __init__(self, author, homework, solution):
+        self.author = author
         self.homework = homework  # Add exception-logic here
         self.solution = solution
-        self.author = author
         self.created = homework.created
 
 
 if __name__ == "__main__":
-    ...
+    new_teacher = Teacher("Albus", "Dumbledor")
+    print()

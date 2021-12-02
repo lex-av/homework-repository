@@ -88,6 +88,7 @@ class Homework:
 
     def is_active(self):
         """Checks if homework task is still active and deadline isn't expired'"""
+
         current_datetime = datetime.datetime.now()
         if current_datetime <= self.created + datetime.timedelta(self.deadline):
             return True
@@ -102,7 +103,10 @@ class HomeworkResult:
 
     def __init__(self, author, homework, solution):
         self.author = author
-        self.homework = homework  # Add exception-logic here
+        if isinstance(homework, Homework):
+            self.homework = homework
+        else:
+            raise HomeworkObjectError("You gave a not Homework object")
         self.solution = solution
         self.created = homework.created
 

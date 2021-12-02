@@ -24,6 +24,7 @@ def instances_counter(cls):
         # Сначала пытался использовать self.instances_number += 1 или cls.instances_number += 1
 
         # self=cls выглядит как костыль, чтобы вызывать методы из инстансов и от класса, но может так и надо
+
         instances_number_increase()
 
     def reset_instances_counter(self=cls):

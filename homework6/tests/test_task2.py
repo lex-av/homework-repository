@@ -32,6 +32,6 @@ def test_positive_student_do_active_homework():
     teacher = Teacher("Daniil", "Shadrin")
     new_homework = teacher.create_homework("New homework: do it", 2)
     student = Student("Roman", "Petrov")
-    hw_result = student.do_homework(new_homework)
+    hw_result = student.do_homework(new_homework, "my_precious_solution")
 
     assert hw_result is not None

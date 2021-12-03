@@ -42,8 +42,8 @@ PEP8 соблюдать строго.
 давать логичные подходящие имена.
 """
 
-
 import datetime
+from collections import defaultdict
 
 
 class HomeworkObjectError(Exception):
@@ -74,8 +74,22 @@ class Student(Person):
 class Teacher(Person):
     """Class for teacher definition"""
 
+    homework_done = defaultdict(set)
+
     def create_homework(self, text, deadline):
         return Homework(text, deadline)
+
+    def check_homework(self, hw_result):
+        if len(hw_result.solution) > 5:
+            Teacher.homework_done[hw_result.homework].add(hw_result)
+            return True
+        return False
+
+    def reset_results(self, homework=None):
+        if homework is None:
+            Teacher.homework_done = defaultdict(set)
+        else:
+            Teacher.homework_done.pop(homework)
 
 
 class Homework:
@@ -114,3 +128,33 @@ class HomeworkResult:
 if __name__ == "__main__":
     new_teacher = Teacher("Albus", "Dumbledor")
     print()
+
+    opp_teacher = Teacher("Daniil", "Shadrin")
+    advanced_python_teacher = Teacher("Aleksandr", "Smetanin")
+
+    lazy_student = Student("Roman", "Petrov")
+    good_student = Student("Lev", "Sokolov")
+
+    oop_hw = opp_teacher.create_homework("Learn OOP", 1)
+    docs_hw = opp_teacher.create_homework("Read docs", 5)
+
+    result_1 = good_student.do_homework(oop_hw, "I have done this hw")
+    result_2 = good_student.do_homework(docs_hw, "I have done this hw too")
+    result_3 = lazy_student.do_homework(docs_hw, "done")
+
+    # try:
+    #     result_4 = HomeworkResult(good_student, "fff", "Solution")
+    # except Exception:
+    #     print('There was an exception here')
+    opp_teacher.check_homework(result_1)
+    # temp_1 = opp_teacher.homework_done
+    #
+    # advanced_python_teacher.check_homework(result_1)
+    # temp_2 = Teacher.homework_done
+    # assert temp_1 == temp_2
+    #
+    opp_teacher.check_homework(result_2)
+    opp_teacher.check_homework(result_3)
+
+    print(Teacher.homework_done[oop_hw])
+    # Teacher.reset_results()

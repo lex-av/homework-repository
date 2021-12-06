@@ -12,6 +12,7 @@ example_tree = {
     "first": ["RED", "BLUE"],
     "second": {
         "simple_key": ["simple", "list", "of", "RED", "valued"],
+        "not_simple_key:": [["RED"], ["RED"], [["REDREDRED"]]],  # Modded a new key here for tests
     },
     "third": {
         "abc": "BLUE",
@@ -27,8 +28,60 @@ example_tree = {
 
 
 def find_occurrences(tree: dict, element: Any) -> int:
-    ...
+    """
+    Recursive search of element through given dict-tree.
+    """
+
+    # Accumulator common parameter for search-funcs
+    acc = 0
+
+    def search_non_nested(item, item_to_search):
+        """
+        Function for search and check in str and non iterable objects
+        in base case of nested search func
+        """
+        nonlocal acc
+
+        if type(item) == str == type(item_to_search):
+            acc += item.count(item_to_search)
+
+        elif type(item) in (bool, str) and type(item_to_search) in (bool, str):
+            if item == item_to_search:
+                acc += 1
+
+    def search_nested(structure, element_to_search):
+        """
+        Recursive function to search through nested structures.
+        Uses non iterable objects and especially str to define base case of recursion.
+        For base case (single element in any iterable) search_non_nested func used
+        """
+
+        structure_to_iterate = structure  # Dummy for avoiding warning in for loop
+
+        if isinstance(structure, str):
+            search_non_nested(structure, element_to_search)  # Base case
+
+        else:
+            try:
+                structure_to_iterate = iter(structure)
+
+            except TypeError:
+                structure = tuple(structure)
+                search_non_nested(structure, element_to_search)  # Base case
+
+            # Recursion case
+            if isinstance(structure, dict):
+                structure_to_iterate = structure.values()
+
+            for current_element in structure_to_iterate:
+                search_nested(current_element, element_to_search)
+
+    # Actual search call here
+    search_nested(tree, element)
+
+    return acc
 
 
 if __name__ == "__main__":
+    print()
     print(find_occurrences(example_tree, "RED"))  # 6

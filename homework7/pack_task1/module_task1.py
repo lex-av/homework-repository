@@ -12,7 +12,7 @@ example_tree = {
     "first": ["RED", "BLUE"],
     "second": {
         "simple_key": ["simple", "list", "of", "RED", "valued"],
-        "not_simple_key:": [["RED"], ["RED"], [["REDREDRED"]]],  # Modded a new key here for tests
+        "not_simple_key:": [["RED"], ["RED"], [["RED"]]],  # Modded a new key here for tests
     },
     "third": {
         "abc": "BLUE",
@@ -45,7 +45,7 @@ def find_occurrences(tree: dict, element: Any) -> int:
         if type(item) == str == type(item_to_search):
             acc += item.count(item_to_search)
 
-        elif type(item) in (bool, str) and type(item_to_search) in (bool, str):
+        elif isinstance(item, (bool, int)) and isinstance(item_to_search, (bool, int)):
             if item == item_to_search:
                 acc += 1
 
@@ -56,7 +56,7 @@ def find_occurrences(tree: dict, element: Any) -> int:
         For base case (single element in any iterable) search_non_nested func used
         """
 
-        structure_to_iterate = structure  # Dummy for avoiding warning in for loop
+        structure_to_iterate = None  # If no need to iterate
 
         if isinstance(structure, str):
             search_non_nested(structure, element_to_search)  # Base case
@@ -66,15 +66,15 @@ def find_occurrences(tree: dict, element: Any) -> int:
                 structure_to_iterate = iter(structure)
 
             except TypeError:
-                structure = tuple(structure)
                 search_non_nested(structure, element_to_search)  # Base case
 
             # Recursion case
             if isinstance(structure, dict):
                 structure_to_iterate = structure.values()
 
-            for current_element in structure_to_iterate:
-                search_nested(current_element, element_to_search)
+            if structure_to_iterate:
+                for current_element in structure_to_iterate:
+                    search_nested(current_element, element_to_search)
 
     # Actual search call here
     search_nested(tree, element)

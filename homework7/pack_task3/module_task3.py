@@ -67,10 +67,10 @@ def tic_tac_toe_checker(board: List[List]) -> str:
         return "x wins!"
 
     if is_winning("o") and not is_winning("x"):
-        return "x wins!"
+        return "o wins!"
 
     if is_winning("o") and is_winning("x"):
-        return "draw"
+        return "draw!"
 
     if not is_winning("o") and not is_winning("x") and is_empty_dots():
         return "unfinished!"

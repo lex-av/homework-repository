@@ -32,5 +32,9 @@ def find_maximal_subarray_sum(nums: List[int], k: int) -> int:
     return global_max
 
 
-a = [-1, 0, 0, 10, 25, 25, 25]
-print(find_maximal_subarray_sum(a, 1))
+if __name__ == "__main__":
+    a = [-1, 0, 0, 10, 25, 25, 25]
+    print(find_maximal_subarray_sum(a, 1))
+
+    a = [1, 2, -1, 5, 8]
+    print(find_maximal_subarray_sum(a, 3))

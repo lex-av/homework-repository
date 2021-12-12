@@ -14,7 +14,7 @@ test_data_positive_long_sequence_case = [
     [13, 21, 34],
 ]
 
-test_data_negative_sequence_case = [
+test_data_false_sequence_case = [
     [0, 1, 4],
     [4, 6, 7, 2],
     [3, 5, 13, 13, 21, 34],
@@ -41,7 +41,7 @@ def test_long_sequence_case(input_value):
     assert check_fibonacci(input_value)
 
 
-@pytest.mark.parametrize("input_value", test_data_negative_sequence_case)
+@pytest.mark.parametrize("input_value", test_data_false_sequence_case)
 def test_wrong_sequence_case(input_value):
     """Testing that wrong subsequences of Fibonacci sequence with len() < 3 give True"""
     assert not check_fibonacci(input_value)

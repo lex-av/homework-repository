@@ -41,8 +41,11 @@ class KeyValueStorage:
                     hash(key)
                     try:
                         self.key_value_storage[key] = int(value)
-                    except TypeError:
+                        setattr(self, key, int(value))
+
+                    except ValueError:
                         self.key_value_storage[key] = value
+                        setattr(self, key, value)
                 except TypeError:
                     raise ValueError("Wrong key")
 

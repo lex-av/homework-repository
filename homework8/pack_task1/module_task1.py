@@ -23,8 +23,6 @@ attribute (for example when there's a line 1=something) ValueError should be rai
 to be small, you are permitted to read it entirely into memory.
 """
 
-from collections import Hashable
-
 
 class KeyValueStorage:
     """Tool for converting text files into dict-like structure"""
@@ -39,8 +37,14 @@ class KeyValueStorage:
             for line in source:
                 # Here will be A LOT of logic
                 key, value = tuple(line.strip().split("="))
-                if isinstance(key, Hashable):
-                    self.key_value_storage[key] = value
+                try:
+                    hash(key)
+                    try:
+                        self.key_value_storage[key] = int(value)
+                    except TypeError:
+                        self.key_value_storage[key] = value
+                except TypeError:
+                    raise ValueError("Wrong key")
 
     def __setitem__(self, key, value):
         self.key_value_storage[key] = value

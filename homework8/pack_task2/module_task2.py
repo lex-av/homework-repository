@@ -42,6 +42,19 @@ class TableData:
         self.current_row = 0
         self.last_row = 0
 
+    def __contains__(self, item):
+        conn = sqlite3.connect(self.database_name)
+        cursor = conn.cursor()
+        search_column = self._get_table_columns()[0]
+        table_name = self._scrub(self.table_name)
+
+        cursor.execute("SELECT " + search_column + " from " + table_name)
+        search_result = [result[0] for result in cursor.fetchall()]
+
+        if item in search_result:
+            return True
+        return False
+
     def __getitem__(self, item):
         conn = sqlite3.connect(self.database_name)
         cursor = conn.cursor()

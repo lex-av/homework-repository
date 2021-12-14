@@ -11,55 +11,90 @@ import sqlite3
 class TableData:
     """Data container for database files"""
 
-    db_tables = tuple()
-    db_tables_rows = dict()
+    def _get_table_columns(self):
+        conn = sqlite3.connect(self.database_name)
+        cursor = conn.cursor()
+        cursor.execute("SELECT * from " + self._scrub(self.table_name))
+        columns = [description[0] for description in cursor.description]
+        conn.close()
+
+        return columns
+
+    @staticmethod
+    def _scrub(table_name):
+        """Service method to erase any possible injections from query"""
+        return "".join(char for char in table_name if char.isalnum())
+
+    def _current_table_len(self):
+        """Service method to update len of iterating table"""
+
+        conn = sqlite3.connect(self.database_name)
+        cursor = conn.cursor()
+        cursor.execute("SELECT COUNT(*) from " + self._scrub(self.table_name))
+        table_len = cursor.fetchone()[0]
+        conn.close()
+
+        return table_len
 
     def __init__(self, database_name, table_name):
         self.database_name = database_name
         self.table_name = table_name
+        self.current_row = 0
+        self.last_row = 0
 
+    def __getitem__(self, item):
+        conn = sqlite3.connect(self.database_name)
+        cursor = conn.cursor()
+        search_column = self._get_table_columns()[0]
+        table_name = self._scrub(self.table_name)
 
-def scrub(table_name):
-    return "".join(char for char in table_name if char.isalnum())
+        cursor.execute("SELECT " + self._get_table_columns()[0] + " from " + self._scrub(self.table_name))
+        search_result = [result[0] for result in cursor.fetchall()]
 
+        if item in search_result:
+            cursor.execute("SELECT * from " + table_name + " WHERE " + search_column + " = " + "'" + str(item) + "'")
+            line = cursor.fetchall()
+            return line[0]
+        else:
+            raise ValueError
 
-def prototype_method_len_using_count(database_name, table_name):
-    conn = sqlite3.connect(database_name)
-    cursor = conn.cursor()
-    cursor.execute("SELECT COUNT(*) from " + scrub(table_name))
-    table_len = cursor.fetchone()
-    conn.close()
+    def __next__(self):
+        self.last_row = self._current_table_len()
 
-    return table_len
+        if self.current_row < self.last_row:
+            conn = sqlite3.connect(self.database_name)
+            cursor = conn.cursor()
+            cursor.execute("SELECT * from " + self._scrub(self.table_name) + " LIMIT 1 OFFSET " + str(self.current_row))
+            table_row = cursor.fetchall()[0]
+            conn.close()
+            self.current_row += 1
 
+            return table_row
+        else:
+            self.current_row = 0
+            raise StopIteration
 
-def prototype_method_get_tables(database_name):
-    conn = sqlite3.connect(database_name)
-    cursor = conn.cursor()
-    cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-    table_names = [items[0] for items in cursor.fetchall()]
-    conn.close()
+    def __iter__(self):
+        return self
 
-    return table_names
+    def __len__(self):
+        conn = sqlite3.connect(self.database_name)
+        cursor = conn.cursor()
+        cursor.execute("SELECT COUNT(*) from " + self._scrub(self.table_name))
+        table_len = cursor.fetchone()
+        conn.close()
 
-
-def prototype_method_get_table_columns(database_name, table_name):
-    conn = sqlite3.connect(database_name)
-    cursor = conn.cursor()
-    cursor.execute("SELECT * from " + scrub(table_name))
-    columns_names = list(map(lambda x: x[0], cursor.description))
-    conn.close()
-
-    return columns_names
-
-
-# def prototype_method_update_table(database_name, table_name):
-#     ...
+        return table_len
 
 
 if __name__ == "__main__":
-    books_table_len = prototype_method_len_using_count("example.sqlite", "books")
-    db_tables = prototype_method_get_tables("example.sqlite")
-    db_table_columns = prototype_method_get_table_columns("example.sqlite", "books")
+    db_container = TableData("example.sqlite", "books")
+    db_container_iterator = iter(db_container)
+    for row in db_container:
+        print(row)
 
+    for row in db_container:
+        print(row)
+
+    print(db_container["Farenheit 451"])
     print()

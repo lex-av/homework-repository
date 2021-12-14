@@ -94,7 +94,7 @@ class TableData:
         conn = sqlite3.connect(self.database_name)
         cursor = conn.cursor()
         cursor.execute("SELECT COUNT(*) from " + self._scrub(self.table_name))
-        table_len = cursor.fetchone()
+        table_len = cursor.fetchone()[0]
         conn.close()
 
         return table_len

@@ -34,6 +34,5 @@ def universal_file_counter(dir_path: Path, file_extension: str, tokenizer: Optio
 
 
 if __name__ == "__main__":
-    path = Path(".")
-    bcd = universal_file_counter(path, "txt", str.split)
-    print()
+    path = Path.cwd()
+    res = universal_file_counter(path, "txt", str.split)

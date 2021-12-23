@@ -8,23 +8,7 @@ We guarantee, that the given sequence contain >= 0 integers inside.
 """
 
 from math import sqrt
-from typing import Sequence
-
-
-def _fib_gen(value_1=0, value_2=1, max_len=2):
-    """
-    A fibonacci numbers finite generator
-    Starting values should be both following
-    fib nums
-    """
-
-    curr_len = 0
-    while curr_len < max_len:
-        yield value_1
-        next_val = value_1 + value_2
-        value_1 = value_2
-        value_2 = next_val
-        curr_len += 1
+from typing import List
 
 
 def is_fib_num(num):
@@ -39,40 +23,32 @@ def get_prev_fib_num(num):
     return round(num / ((1 + sqrt(5)) / 2.0))
 
 
-def check_fibonacci(data: Sequence[int]) -> bool:
+def check_fibonacci(data: List[int]) -> bool:
     """Checks fib sequence using generator-magic"""
 
-    if (len(data) == 1 and data[0] in (0, 1)) or not data:
+    if not data:
+        return False
+
+    if len(data) == 1:  # 1-num sequence cases
+        return is_fib_num(data[0])
+
+    if data == [0, 1] or data == [1, 1] or data == [0, 1, 1]:  # Cut simple cases from loop here
         return True
 
-    # If just one number, get previous fib num and shuffle generator
-    # 1 step further
-    if len(data) == 1:
-        if not is_fib_num(data[0]):
-            return False
-        else:
-            val_2 = data[0]
-            val_1 = get_prev_fib_num(val_2)
-            fib_nums_gen = _fib_gen(val_1, val_2, len(data))
-            next(fib_nums_gen)
+    starting_pivot = 2
+    if len(data) > 3 and data[:3] == [0, 1, 1]:  # Special check for seqs, that start from 0, 1, 1
+        starting_pivot = 3
     else:
-        # If more than one number, use generator as it is
-        if not is_fib_num(data[0]) and not is_fib_num(data[1]):
-            return False
-        else:
-            val_1 = data[0]
-            val_2 = data[1]
-            fib_nums_gen = _fib_gen(val_1, val_2, len(data))
+        data.insert(0, get_prev_fib_num(data[0]))
 
-    for seq_value, gen_value in zip(data, fib_nums_gen):
-        if seq_value != gen_value:
+    for index, num in enumerate(data[starting_pivot:], starting_pivot):
+        if num != data[index - 1] + data[index - 2]:
             return False
 
     return True
 
 
 if __name__ == "__main__":
-
     print()
     print(check_fibonacci([3]))
     print(check_fibonacci([2]))

@@ -20,6 +20,9 @@ class User(models.Model):
     name = models.CharField(max_length=25)
     last_name = models.CharField(max_length=25)
 
+    class Meta:
+        abstract = True
+
 
 class Teacher(User):
     """

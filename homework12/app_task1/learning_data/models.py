@@ -4,6 +4,7 @@
 import datetime
 
 from django.db import models
+from django.utils import timezone
 
 
 class HomeworkObjectException(Exception):
@@ -79,7 +80,7 @@ class Homework(models.Model):
     def is_active(self):
         """Checks if homework task is still active and deadline isn't expired'"""
 
-        current_datetime = datetime.datetime.now()
+        current_datetime = timezone.now()
         if current_datetime <= self.deadline:
             return True
         return False

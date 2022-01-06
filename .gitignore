@@ -132,3 +132,6 @@ dmypy.json
 .idea/
 
 homework2/tasks/hw1/data.txt
+
+# DB files
+*.db

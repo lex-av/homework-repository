@@ -15,8 +15,10 @@ from typing import List
 
 
 def get_longest_diverse_words(file_path: str) -> List[str]:
-    """Using regex to find words, then sorting by two parameters to
-    find 10 longest words consisting from largest amount of unique symbols"""
+    """
+    Using regex to find words, then sorting by two parameters to
+    find 10 longest words consisting from largest amount of unique symbols
+    """
 
     # Regex pattern for words search and words accumulator
     pattern = r"\b\w+\b"
@@ -27,9 +29,9 @@ def get_longest_diverse_words(file_path: str) -> List[str]:
         for line in fi:
             line_words = re.findall(pattern, line.strip())
             if line_words:
-                words += re.findall(pattern, line.strip())
+                words += line_words
 
-    # Sort words by  1) length and  2) unique numbers and get 10 last
+    # Sort words by  1) length and  2) unique numbers and 3) get 10 last
     words_len_sorted = sorted(words, key=lambda w: (len(w), len(set(w))))[-10:]
 
     return words_len_sorted
@@ -40,15 +42,15 @@ def get_rarest_char(file_path: str) -> str:
     to find rarest"""
 
     # Words accumulator
-    words = ""
+    words = ""  # it will be transformed to list, so just make it list
 
-    # Read all words line by line using regEx
+    # Read all words line by line using regEx  wrong com here !!
     with open(file_path) as fi:
         for line in fi:
             if line:
                 words += line
 
-    rarest_symbol = Counter(list(words)).most_common()[-1][0]
+    rarest_symbol = Counter(list(words)).most_common()[-1][0]  # List transform here !!
 
     return rarest_symbol
 
@@ -65,7 +67,7 @@ def count_punctuation_chars(file_path: str) -> int:
         for line in fi:
             line_p_chars = re.findall(pattern, line.strip())
             if line_p_chars:
-                p_chars += re.findall(pattern, line.strip())
+                p_chars += line_p_chars
 
     return len(p_chars)
 
@@ -93,3 +95,8 @@ def get_most_common_non_ascii_char(file_path: str) -> str:
     rarest_symbol = Counter(chars).most_common()[-1][0]
 
     return rarest_symbol
+
+
+if __name__ == "__main__":
+
+    print()

@@ -38,19 +38,22 @@ def get_longest_diverse_words(file_path: str) -> List[str]:
 
 
 def get_rarest_char(file_path: str) -> str:
-    """Using regex to find words, then collections.Counter
-    to find rarest"""
+    """
+    For line in file extend accumulator by
+    chars in line. Then Counter to get
+    rarest char
+    """
 
     # Words accumulator
-    words = []  # it will be transformed to list, so just make it list
+    words = []
 
-    # Read all words line by line using regEx  wrong com here !!
+    # Read all chars in file lines
     with open(file_path) as fi:
         for line in fi:
             if line:
-                words += line
+                words.extend(line)
 
-    rarest_symbol = Counter(words).most_common()[-1][0]  # List transform here !!
+    rarest_symbol = Counter(words).most_common()[-1][0]
 
     return rarest_symbol
 

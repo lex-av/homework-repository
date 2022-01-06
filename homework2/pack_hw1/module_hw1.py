@@ -91,7 +91,7 @@ def count_non_ascii_chars(file_path: str) -> int:
         Used that clumsy logic here for a reason:
         File is probably broken at some potion(s)
         I could not catch the exception in for loop,
-        so used white True with next() method
+        so used while True with next() method
         worked great
         """
 
@@ -125,7 +125,7 @@ def get_most_common_non_ascii_char(file_path: str) -> str:
         Used that clumsy logic here for a reason:
         File is probably broken at some potion(s)
         I could not catch the exception in for loop,
-        so used white True with next() method
+        so used while True with next() method
         worked great
         """
 

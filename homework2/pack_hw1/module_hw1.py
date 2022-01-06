@@ -81,25 +81,73 @@ def count_non_ascii_chars(file_path: str) -> int:
     # Regex pattern
     pattern = r"[\u0080-\uFFFF]"
 
-    fi = open(file_path, encoding="unicode-escape")
-    chars = re.findall(pattern, fi.read())
-    fi.close()
+    # fi = open(file_path, encoding="unicode-escape")
+    # chars = re.findall(pattern, fi.read())
+    # fi.close()
 
-    return len(chars)
+    acc = []
+    with open(file_path, encoding="unicode-escape") as src:
+        """
+        Used that clumsy logic here for a reason:
+        File is probably broken at some potion(s)
+        I could not catch the exception in for loop,
+        so used white True with next() method
+        worked great
+        """
+
+        while True:
+            try:
+                try:
+                    line = next(src)
+                    line_chars = re.findall(pattern, line)
+                    acc.extend(line_chars)
+
+                except StopIteration:
+                    break  # regular loop exit on stop iteration
+
+            except UnicodeDecodeError:
+                pass  # skipping damaged sections
+
+    return len(acc)
 
 
 def get_most_common_non_ascii_char(file_path: str) -> str:
     # Regex pattern
     pattern = r"[\u0080-\uFFFF]"
 
-    fi = open(file_path, encoding="unicode-escape")
-    chars = re.findall(pattern, fi.read())
-    fi.close()
-    rarest_symbol = Counter(chars).most_common()[-1][0]
+    # fi = open(file_path, encoding="unicode-escape")
+    # chars = re.findall(pattern, fi.read())
+    # fi.close()
+
+    acc = []
+    with open(file_path, encoding="unicode-escape") as src:
+        """
+        Used that clumsy logic here for a reason:
+        File is probably broken at some potion(s)
+        I could not catch the exception in for loop,
+        so used white True with next() method
+        worked great
+        """
+
+        while True:
+            try:
+                try:
+                    line = next(src)
+                    line_chars = re.findall(pattern, line)
+                    acc.extend(line_chars)
+
+                except StopIteration:
+                    break  # regular loop exit on stop iteration
+
+            except UnicodeDecodeError:
+                pass  # skipping damaged sections
+
+    rarest_symbol = Counter(acc).most_common()[-1][0]
 
     return rarest_symbol
 
 
 if __name__ == "__main__":
 
+    a = count_non_ascii_chars("data.txt")
     print()

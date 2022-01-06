@@ -42,7 +42,7 @@ def get_rarest_char(file_path: str) -> str:
     to find rarest"""
 
     # Words accumulator
-    words = ""  # it will be transformed to list, so just make it list
+    words = []  # it will be transformed to list, so just make it list
 
     # Read all words line by line using regEx  wrong com here !!
     with open(file_path) as fi:
@@ -50,7 +50,7 @@ def get_rarest_char(file_path: str) -> str:
             if line:
                 words += line
 
-    rarest_symbol = Counter(list(words)).most_common()[-1][0]  # List transform here !!
+    rarest_symbol = Counter(words).most_common()[-1][0]  # List transform here !!
 
     return rarest_symbol
 

@@ -24,9 +24,6 @@ You will learn:
 """
 
 
-import os
-
-
 def read_magic_number(path: str) -> bool:
     """
     If first line is a number return true if number in an interval [1, 3)
@@ -40,14 +37,10 @@ def read_magic_number(path: str) -> bool:
 
     first_line = src.readline()
     num = int(first_line)
-
-    if 1 <= num < 3:
-        src.close()
-        return True
     src.close()
-    return False
+
+    return 1 <= num < 3
 
 
-if __name__ == '__main__':
-    print(os.path.abspath('text_file_example.txt'))
-    # print(read_magic_number('text1_file_example.txt'))
+if __name__ == "__main__":
+    pass

@@ -21,9 +21,9 @@ def is_armstrong(number: int) -> bool:
         return False
     power = len(str(number))
     digits = map(int, list(str(number)))
-    number_sum = sum([num**power for num in digits])
+    number_sum = sum(map(lambda num: num ** power, digits))
     return number == number_sum
 
 
-if __name__ == '__main__':
-    print(is_armstrong(153))
+if __name__ == "__main__":
+    pass

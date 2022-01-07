@@ -2,7 +2,7 @@
 
 from unittest import mock
 
-from ..pack_task1.module_task1 import cache
+from homework3.pack_task1.module_task1 import cache
 
 
 def example_func():

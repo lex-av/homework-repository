@@ -25,12 +25,12 @@ f()
 
 
 def cache(times=3):
-
     def outer_decorator(func):
         cached_values = {}
+        outer_times = times
 
         def wrapper(*args):
-            nonlocal times
+            times = outer_times
 
             if times != 0:
                 if args in cached_values:
@@ -44,4 +44,5 @@ def cache(times=3):
             return cached_values[args]
 
         return wrapper
+
     return outer_decorator

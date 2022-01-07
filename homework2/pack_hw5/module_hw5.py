@@ -12,56 +12,77 @@ assert = custom_range(string.ascii_lowercase, 'p', 'g', -2) == ['p', 'n', 'l', '
 
 
 from io import TextIOWrapper
-from typing import AnyStr, List, Sequence, Union
+from typing import AnyStr, Generator, Sequence, TextIO, Union
 
 
-def custom_range(iterable: Sequence,
-                 start: Union[int, AnyStr] = None,
-                 stop: Union[int, AnyStr] = None,
-                 step: int = None) -> List:
-    """Converts given iterable to [optionally sliced] list.
+def custom_range(iterable: Union[Sequence, TextIO], *args: Union[int, AnyStr]) -> Generator:
+    """
+    Behaves as extended range
+    On top of range base functional:
+    -iterates through strs by chars
+    -iterates through strs by indexes
+    -iterates through files by lines
+    -iterates through collections by indexes
+    -fully supports slices (by chars too)
+    -works as generator
+    """
 
-    Slicing pivots for file object corresponds to character
-    position in file and should be integers.
-    Slicing pivots for tuple and list works normally and
-    should be integers.
-    Slicing pivots for string may be str or int. So,
-    slicing by index and element is available.
+    # Start, stop, step initialisation for slices
+    args_count = len(args)
+    stop = None
+    start = None
+    step = None
 
-    Dict will be converted to list of keys
+    if args_count == 1:
+        stop = args[0]
+    if args_count == 2:
+        start = args[0]
+        stop = args[1]
+        if type(start) != type(stop):
+            raise TypeError("Start and stop should be one type")
+    if args_count == 3:
+        start = args[0]
+        stop = args[1]
+        step = args[2]
+        if type(start) != type(stop):
+            raise TypeError("Start and stop should be one type")
 
-    Set wil be converted to list"""
+    if isinstance(step, str):
+        raise TypeError("Wrong type for step parameter")
 
-    # If file object given
+    # Container for slicing parameters
+    slice_params = {"start": start, "stop": stop, "step": step}
+
+    # Data container for types except str
+    data = []
+
+    # Building lists to iterate through
     if isinstance(iterable, TextIOWrapper):
-        iterable = list(map(str.strip, iterable.readlines()))
-        return iterable[start:stop:step]
+        if isinstance(stop, str) or isinstance(start, str):
+            raise TypeError("Start and stop for file obj should be int")
 
-    # Str object given
-    if isinstance(iterable, str):
-        elems_to_indexes = dict(zip(list(iterable), range(len(iterable))))
-        elems_to_indexes[None] = None
-        iterable = list(iterable)
+        for line in map(str.strip, iterable.readlines()):
+            data.append(line)
+        data_to_iterate = data[slice(*slice_params.values())]
 
-        if isinstance(start, str) or start is None:
-            return iterable[elems_to_indexes[start]:elems_to_indexes[stop]:step]
-        elif isinstance(start, int) or start is None:
-            return iterable[start:stop:step]
-        else:
-            raise Exception("Got wrong args for slicing")
-
-    # Tuple/list/Set/Iterator object given
     else:
-        iterable = list(iterable)
+        data = list(iterable)
 
-        if isinstance(start, int) or start is None:
-            return iterable[start:stop:step]
-        else:
-            raise Exception("Got wrong args for slicing")
+        # Convert str-type start/stop back to int
+        # Can give unexpected results with non unique chars in given str
+        if isinstance(slice_params["start"], str) and isinstance(iterable, str):
+            slice_params["start"] = iterable.find(slice_params["start"])
+        if isinstance(slice_params["stop"], str) and isinstance(iterable, str):
+            slice_params["stop"] = iterable.find(slice_params["stop"])
+
+        data_to_iterate = data[slice(*slice_params.values())]
+
+    for element in data_to_iterate:
+        yield element
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import string
-    assert custom_range(string.ascii_lowercase, 'g') == ['a', 'b', 'c', 'd', 'e', 'f']
-    assert custom_range(string.ascii_lowercase, 'g', 'p') == ['g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o']
-    assert custom_range(string.ascii_lowercase, 'p', 'g', -2) == ['p', 'n', 'l', 'j', 'h']
+
+    a = custom_range(string.ascii_lowercase, "g", "a", -1)
+    print()

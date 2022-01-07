@@ -26,15 +26,8 @@ import urllib.request
 from collections import Counter
 
 
-def get_info_from_url(_url: str) -> str:
-    try:
-        file_html = urllib.request.urlopen(_url)
-    except Exception:
-        raise ValueError(f"Unreachable {_url}")
-
-    file_html = str(file_html.read())
-
-    return file_html
+def get_url_response(_url: str) -> urllib.request.urlopen:  # Is it even legal?
+    return urllib.request.urlopen(_url)
 
 
 def count_dots_on_i(url: str) -> int:
@@ -43,11 +36,16 @@ def count_dots_on_i(url: str) -> int:
     on any network error
     """
 
-    file_html = get_info_from_url(url)
-    count_i = Counter(file_html)['i']
+    response = get_url_response(url)
+    status_code = response.getcode()
+    if status_code != 200:
+        raise ValueError(f"Unreachable {url}")
+
+    text_data = str(response.read())
+    count_i = Counter(text_data)["i"]
 
     return count_i
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print(count_dots_on_i("https://example.com/"))

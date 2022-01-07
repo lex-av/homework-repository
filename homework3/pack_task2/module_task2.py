@@ -17,26 +17,24 @@
     of multiprocessing module. You are not allowed to modify slow_calculate function.
 """
 
-import hashlib
-import random
-import struct
-import time
-from multiprocessing.pool import ThreadPool as Pool
+
+from multiprocessing.pool import Pool
+
+from homework3.pack_task2.worker import slow_calculate
 
 
-def multiprocess_calculate(input_data):
-    def slow_calculate(value):
-        """Some weird voodoo magic calculations"""
-        time.sleep(random.randint(1, 3))
-        data = hashlib.md5(str(value).encode()).digest()
-        return sum(struct.unpack('<' + 'B' * len(data), data))
+class MultiWorker:
+    """Outer class for multiprocessing job"""
 
-    with Pool(40) as p:
-        output = p.map(slow_calculate, input_data)
+    @staticmethod
+    def multiprocess_calculate(input_data):
+        with Pool(48) as p:
+            output = p.map(slow_calculate, input_data)
 
-    return output
+        return output
 
 
-if __name__ == '__main__':
-    print(multiprocess_calculate([i for i in range(500)]))
+if __name__ == "__main__":
+
+    print(*MultiWorker.multiprocess_calculate([i for i in range(500)]))
     print("ready")

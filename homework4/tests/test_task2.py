@@ -4,6 +4,7 @@ import os
 from unittest import mock
 
 import pytest
+
 from homework4.pack_task2.module_task2 import count_dots_on_i
 
 

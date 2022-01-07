@@ -23,8 +23,13 @@ def cache(func: Callable) -> Callable:
         if str(args) not in buffer:
             buffer[str(args)] = func(*args)
         return buffer[str(args)]
+
     return wrapper
 
 
 def functional(a, b) -> int:
     return (a ** b) ** 2
+
+
+if __name__ == "__main__":
+    pass

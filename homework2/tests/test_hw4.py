@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from ..pack_hw4.module_hw4 import *
+from homework2.pack_hw4.module_hw4 import cache, functional
 
 
 def test_hw4_decorator():

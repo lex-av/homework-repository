@@ -36,7 +36,10 @@ def read_magic_number(path: str) -> bool:
         raise ValueError("Wrong file path")
 
     first_line = src.readline()
-    num = int(first_line)
+    try:
+        num = int(first_line)
+    except ValueError:
+        num = 5  # will lead to returning False
     src.close()
 
     return 1 <= num < 3

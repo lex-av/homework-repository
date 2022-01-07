@@ -1,35 +1,65 @@
 # -*- coding: utf-8 -*-
-from ..pack_hw1.module_hw1 import (count_punctuation_chars,
-                                   get_longest_diverse_words, get_rarest_char)
+
+import os
+
+import pytest
+
+from homework2.pack_hw1.module_hw1 import (
+    count_non_ascii_chars,
+    count_punctuation_chars,
+    get_longest_diverse_words,
+    get_most_common_non_ascii_char,
+    get_rarest_char,
+)
+
+test_data_diverse_words = [
+    ("/homework2/tests/test_data/src_hw1_1.txt", ["abbb", "abcc", "adcd", "adcde"]),
+    ("/homework2/tests/test_data/src_hw1_2.txt", ["ad", "ad", "am", "am", "ag", "ag", "abbb", "abcc", "adcd", "adcde"]),
+]
+
+test_data_rarest_symbols = [
+    ("/homework2/tests/test_data/src_hw1_3.txt", "."),
+    ("/homework2/tests/test_data/src_hw1_4.txt", "\n"),
+]
+
+test_data_count_punctuation = [
+    ("/homework2/tests/test_data/src_hw1_5.txt", 4),
+    ("/homework2/tests/test_data/src_hw1_6.txt", 0),
+    ("/homework2/tests/test_data/src_hw1_7.txt", 11),
+]
 
 
-def test_longest_diverse_words_1():
+@pytest.mark.parametrize("test_file_path, expected", test_data_diverse_words)
+def test_longest_diverse_words_1(test_file_path, expected):
     """Testing order of words"""
-    assert get_longest_diverse_words(r"homework2/tests/src_hw1_1.txt") == ['abbb', 'abcc', 'adcd', 'adcde']
+    path_to_hws = os.getcwd()
+    assert get_longest_diverse_words(path_to_hws + test_file_path) == expected
 
 
-def test_longest_diverse_words_2():
-    """Testing order of words and slicing"""
-    assert get_longest_diverse_words(r"homework2/tests/src_hw1_2.txt") == ['ad', 'ad',
-                                                                           'am', 'am',
-                                                                           'ag', 'ag',
-                                                                           'abbb', 'abcc',
-                                                                           'adcd', 'adcde']
-
-
-def test_rarest_symbol_1():
+@pytest.mark.parametrize("test_file_path, expected", test_data_rarest_symbols)
+def test_rarest_symbol_1(test_file_path, expected):
     """Testing rarest symbol counting"""
-    assert get_rarest_char(r"homework2/tests/src_hw1_3.txt") == '.'
+    path_to_hws = os.getcwd()
+    assert get_rarest_char(path_to_hws + test_file_path) == expected
 
 
-def test_rarest_symbol_2():
-    """Testing rarest symbol counting, but for special symbol"""
-    assert get_rarest_char(r"homework2/tests/src_hw1_4.txt") == '\n'
-
-
-def test_count_punctuation_chars():
+@pytest.mark.parametrize("test_file_path, expected", test_data_count_punctuation)
+def test_count_punctuation_chars(test_file_path, expected):
     """Testing punctuation chars counting"""
-    assert count_punctuation_chars(r"homework2/tests/src_hw1_5.txt") == 4
-    assert count_punctuation_chars(r"homework2/tests/src_hw1_6.txt") == 0
-    # Function need to ignore spaces
-    assert count_punctuation_chars(r"homework2/tests/src_hw1_7.txt") == 11
+    path_to_hws = os.getcwd()
+
+    assert count_punctuation_chars(path_to_hws + test_file_path) == expected
+
+
+def test_count_non_ascii():
+    """Testing non ascii chars counting"""
+    path_to_hws = os.getcwd()
+
+    assert count_non_ascii_chars(path_to_hws + "/homework2/tests/test_data/src_hw1_8.txt") == 15
+
+
+def test_count_most_common_non_ascii():
+    """Testing most common non ascii chars counting"""
+    path_to_hws = os.getcwd()
+
+    assert get_most_common_non_ascii_char(path_to_hws + "/homework2/tests/test_data/src_hw1_8.txt") == "\u00f6"

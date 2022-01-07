@@ -112,6 +112,8 @@ def count_non_ascii_chars(file_path: str) -> int:
 
 
 def get_most_common_non_ascii_char(file_path: str) -> str:
+    """Search for most common non-ascii chars"""
+
     # Regex pattern
     pattern = r"[\u0080-\uFFFF]"
 
@@ -142,7 +144,7 @@ def get_most_common_non_ascii_char(file_path: str) -> str:
             except UnicodeDecodeError:
                 pass  # skipping damaged sections
 
-    rarest_symbol = Counter(acc).most_common()[-1][0]
+    rarest_symbol = Counter(acc).most_common()[0][0]
 
     return rarest_symbol
 
@@ -150,4 +152,5 @@ def get_most_common_non_ascii_char(file_path: str) -> str:
 if __name__ == "__main__":
 
     a = count_non_ascii_chars("data.txt")
+    b = get_most_common_non_ascii_char("data.txt")
     print()

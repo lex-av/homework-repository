@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+
 from homework4.pack_task5.module_task5 import fizzbuzz
 
 test_data = [

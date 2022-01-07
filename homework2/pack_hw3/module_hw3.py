@@ -15,10 +15,14 @@ assert combinations([1, 2], [3, 4]) == [
 
 
 from itertools import product
-from typing import Any, List
+from typing import List
 
 
-def combinations(*args: List[Any]) -> List[Any]:
+def combinations(*args: List[int]) -> List[List[int]]:
     """Itertools do all the work"""
     combos = list(product(*args))
     return list(map(list, combos))
+
+
+if __name__ == "__main__":
+    pass

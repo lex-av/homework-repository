@@ -7,31 +7,30 @@ from ..pack_task1.module_task1 import User
 
 @pytest.fixture
 def create_one_class_instance():
-    user_0 = User()
+    user_0 = User("Smith")
     yield user_0
     User.reset_instances_counter()
-    # Для TearDown использовал собственный функционал того, что тестировал. Не уверен, что так правильно
-    # Пробовал del user_0, но не получил результатов. Есть более элегантный подход или я сделал правильно?
 
 
 @pytest.fixture
 def create_multiple_class_instances():
-    _, _, user_b = User(), User(), User()
+    _, _, user_b = User("Smith"), User("Smith"), User("Smith")
     yield user_b
     User.reset_instances_counter()
 
 
 @pytest.fixture
 def create_multiple_class_instances_for_reset_return():
-    _, _, user_b = User(), User(), User()
-    return user_b
-    # Тут не использовал TearDown, так как в тесте и так чистится счётчик. Стоит ли сделать по-другому?
+    _, _, user_b = User("Smith"), User("Smith"), User("Smith")
+    yield user_b
+    User.reset_instances_counter()
 
 
 @pytest.fixture
 def create_multiple_class_instances_for_reset_result():
-    _, _, user_b = User(), User(), User()
-    return user_b
+    _, _, user_b = User("Smith"), User("Smith"), User("Smith")
+    yield user_b
+    User.reset_instances_counter()
 
 
 def test_positive_instances_counter_no_instances():
@@ -53,3 +52,24 @@ def test_positive_instances_counter_reset_return(create_multiple_class_instances
 def test_positive_instances_counter_reset_result(create_multiple_class_instances_for_reset_result):
     create_multiple_class_instances_for_reset_result.reset_instances_counter()
     assert create_multiple_class_instances_for_reset_result.get_created_instances() == 0
+
+
+def test_pos_instances_counter_with_deeper_inheritance():
+    class Teacher(User):
+        """Some test class"""
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+
+    assert Teacher.get_created_instances() == 0
+
+
+def test_pos_instances_counter_with_deeper_inheritance_new_instance_creation():
+    class Teacher(User):
+        """Some test class"""
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+
+    new_teacher = Teacher("Smith")
+    assert new_teacher.get_created_instances() == 1

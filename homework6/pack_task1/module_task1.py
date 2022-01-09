@@ -86,27 +86,6 @@ class User:
     def __init__(self, last_name):
         self.last_name = last_name
 
-    pass
-
-
-class Teacher(User):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-
-class SuperTeacher(Teacher):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
 
 if __name__ == "__main__":
-    print("Expected 0: ", User.get_created_instances())
-    user, user_a, user_b = User("Smith"), User("Smith"), User("Smith")
-    teacher = Teacher("Smith")
-    teacher2 = Teacher("Smith")
-    teacher3 = SuperTeacher("Smith")
-    print("(teacher) Expected 2: ", teacher.get_created_instances())
-    print("Expected 3: ", user.get_created_instances())
-    print("Expected 3: ", user.reset_instances_counter())
-    print("Expected 0: ", user.get_created_instances())
-    print()
+    pass

@@ -10,48 +10,102 @@ reset_instances_counter - сбросить счетчик экземпляров
 """
 
 
-def instances_counter(cls):
-    """Some code"""
-    cls.instances_number = 0
+def instance_counter_inheritance(cls):
+    """
+    This deco uses inheritance strategy:
+    - Create new class, inherited from
+    - Add functionality to new class
+    - return new inherited class
 
-    def instances_number_increase():
-        """Internal service func"""
-        cls.instances_number += 1
+    This strat leads to some rules in next possible
+    inheritance:
+    New inherited class should contain following func:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+    to call counting or other parent-inits
+    """
 
-    def __init__(self=cls):
-        """Init for increasing count on object creation"""
-        # Я на самом деле не понял, почему сработало именно так
-        # Сначала пытался использовать self.instances_number += 1 или cls.instances_number += 1
+    class ModifiedOrig(cls):
+        """New inherited class supporting instance counting"""
 
-        # self=cls выглядит как костыль, чтобы вызывать методы из инстансов и от класса, но может так и надо
+        def __init__(self, *args, **kwargs):
+            """
+            1) Init instances counter
+            2) Increment it by 1, because instance is being created
+            3) Call original __init__
+            """
 
-        instances_number_increase()
+            self.init_counter_on_instance_creation()
+            super().__init__(*args, **kwargs)
 
-    def reset_instances_counter(self=cls):
-        """Object attribute"""
-        saved_number = self.instances_number
-        self.instances_number = 0
-        return saved_number
+        @classmethod
+        def init_counter_on_instance_creation(cls):
+            """
+            This counting initializer increments instance
+            counter when instance is created
+            (also creates counter attribute if it's not present
+            in class namespace)
+            """
 
-    def get_created_instances(self=cls):
-        """Object attribute"""
-        return self.instances_number
+            if "instances_counter" not in cls.__dict__:
+                cls.instances_counter = 1
+            else:
+                cls.instances_counter += 1
 
-    setattr(cls, __init__.__name__, eval(__init__.__name__))
-    setattr(cls, reset_instances_counter.__name__, eval(reset_instances_counter.__name__))
-    setattr(cls, get_created_instances.__name__, eval(get_created_instances.__name__))
+        @classmethod
+        def init_counter(cls):
+            """
+            This counting initializer is used in situations,
+            when instance is not being created, so it only
+            initialise counter is it's not present in class
+            namespace.
+            """
+            if "instances_counter" not in cls.__dict__:
+                cls.instances_counter = 0
 
-    return cls
+        @classmethod
+        def get_created_instances(cls):
+            cls.init_counter()
+            return cls.instances_counter
+
+        @classmethod
+        def reset_instances_counter(cls):
+            cls.init_counter()
+            try:
+                return cls.instances_counter
+            finally:
+                cls.instances_counter = 0
+
+    return ModifiedOrig
 
 
-@instances_counter
+@instance_counter_inheritance
 class User:
+    name = "Dave"
+
+    def __init__(self, last_name):
+        self.last_name = last_name
+
     pass
+
+
+class Teacher(User):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
+class SuperTeacher(Teacher):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
 
 if __name__ == "__main__":
     print("Expected 0: ", User.get_created_instances())
-    user, user_a, user_b = User(), User(), User()
+    user, user_a, user_b = User("Smith"), User("Smith"), User("Smith")
+    teacher = Teacher("Smith")
+    teacher2 = Teacher("Smith")
+    teacher3 = SuperTeacher("Smith")
+    print("(teacher) Expected 2: ", teacher.get_created_instances())
     print("Expected 3: ", user.get_created_instances())
     print("Expected 3: ", user.reset_instances_counter())
     print("Expected 0: ", user.get_created_instances())

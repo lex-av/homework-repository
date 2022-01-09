@@ -4,10 +4,10 @@ import datetime
 
 import pytest
 
-from ..pack_task2.module_task2 import (
-    DeadlineError,
+from homework6.pack_task2.module_task2 import (
+    DeadlineException,
     Homework,
-    HomeworkObjectError,
+    HomeworkObjectException,
     HomeworkResult,
     Student,
     Teacher,
@@ -52,7 +52,7 @@ def test_negative_student_do_expired_homework():
     new_hw.created = new_hw.created - datetime.timedelta(2)  # Shuffle created parameter 2 days back
     student = Student("Roman", "Petrov")
 
-    with pytest.raises(DeadlineError):
+    with pytest.raises(DeadlineException):
         student.do_homework(new_hw, "my_precious_solution")
 
 
@@ -60,7 +60,7 @@ def test_negative_homework_result_gets_non_hw_object():
     """HomeworkResult should not take non homework obj for homework attr"""
     teacher = Teacher("Daniil", "Shadrin")
 
-    with pytest.raises(HomeworkObjectError):
+    with pytest.raises(HomeworkObjectException):
         HomeworkResult("Dude", teacher, "his solution")
 
 

@@ -17,7 +17,7 @@ HomeworkResult принимает объект автора задания, пр
     created - c точной датой и временем создания
 2. Если задание уже просрочено хотелось бы видеть исключение при do_homework,
 а не просто принт 'You are late'.
-Поднимайте исключение DeadlineError с сообщением 'You are late' вместо print.
+Поднимайте исключение DeadlineException с сообщением 'You are late' вместо print.
 3. Student и Teacher имеют одинаковые по смыслу атрибуты
 (last_name, first_name) - избавиться от дублирования с помощью наследования
 4.
@@ -46,11 +46,11 @@ import datetime
 from collections import defaultdict
 
 
-class HomeworkObjectError(Exception):
+class HomeworkObjectException(Exception):
     """Not Homework object given"""
 
 
-class DeadlineError(Exception):
+class DeadlineException(Exception):
     """Homework deadline expired"""
 
 
@@ -68,7 +68,7 @@ class Student(Person):
     def do_homework(self, homework, student_solution):
         if homework.is_active():
             return HomeworkResult(self, homework, student_solution)
-        raise DeadlineError("You are late")
+        raise DeadlineException("You are late")
 
 
 class Teacher(Person):
@@ -120,7 +120,7 @@ class HomeworkResult:
         if isinstance(homework, Homework):
             self.homework = homework
         else:
-            raise HomeworkObjectError("You gave a not Homework object")
+            raise HomeworkObjectException("You gave a not Homework object")
         self.solution = solution
         self.created = homework.created
 

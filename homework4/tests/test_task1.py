@@ -38,5 +38,5 @@ def test_case_read_magic_number_wrong_line(tmpdir, wrong_input):
     negative_case_file = tmpdir.join("file.txt")
     negative_case_file.write(wrong_input)
 
-    negative_result = read_magic_number(negative_case_file)
-    assert not negative_result
+    with pytest.raises(ValueError):
+        read_magic_number(negative_case_file)

@@ -41,8 +41,7 @@ def count_dots_on_i(url: str) -> int:
     if status_code != 200:
         raise ValueError(f"Unreachable {url}")
 
-    text_data = str(response.read())
-    count_i = Counter(text_data)["i"]
+    count_i = Counter(str(response.read()))["i"]
 
     return count_i
 

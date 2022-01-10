@@ -38,8 +38,9 @@ def read_magic_number(path: str) -> bool:
     first_line = src.readline()
     try:
         num = int(first_line)
-    except ValueError:
-        num = 5  # will lead to returning False
+    except Exception:
+        src.close()
+        raise ValueError("Wrong file first line")
     src.close()
 
     return 1 <= num < 3

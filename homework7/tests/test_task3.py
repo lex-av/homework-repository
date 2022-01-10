@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from ..pack_task3.module_task3 import tic_tac_toe_checker
+from homework7.pack_task3.module_task3 import tic_tac_toe_checker
 
 board_win_x = [["x", "x", "x"], ["-", "x", "o"], ["x", "o", "x"]]
 board_win_x_diagonal = [["x", "o", "-"], ["-", "x", "o"], ["x", "o", "x"]]

@@ -16,6 +16,7 @@ Example:
      [x, x, x]]
      Return value should be "x wins!"
 """
+
 from typing import List
 
 
@@ -33,7 +34,17 @@ def tic_tac_toe_checker(board: List[List]) -> str:
          ["x", "o", "x"]]
     """
 
-    def is_winning(dot):
+    def _transpose(board: List[List]) -> List[List]:
+        """Returns board columns"""
+        return list(map(list, zip(*board)))
+
+    def _diagonal(board: List[List]) -> List[List]:
+        return [r[i] for i, r in enumerate(board)]
+
+    def _opposite_diagonal(board: List[List]) -> List[List]:
+        return [r[-i - 1] for i, r in enumerate(board)]
+
+    def is_winning(dot: str) -> bool:
         """
         Checks if one of the players have a winning combo.
         dot is either x or o
@@ -41,20 +52,16 @@ def tic_tac_toe_checker(board: List[List]) -> str:
 
         win_condition = [dot, dot, dot]
 
-        for line in board:
-            if line == win_condition:
-                return True
-
-        for row in list(map(list, zip(*board))):
-            if row == win_condition:
-                return True
-
-        # Diagonal
-        if [r[i] for i, r in enumerate(board)] == win_condition:
+        if any(row == win_condition for row in board):
             return True
 
-        # Opposite diagonal
-        if [r[-i - 1] for i, r in enumerate(board)] == win_condition:
+        if any(row == win_condition for row in _transpose(board)):
+            return True
+
+        if _diagonal(board) == win_condition:
+            return True
+
+        if _opposite_diagonal(board) == win_condition:
             return True
 
         return False
@@ -77,7 +84,4 @@ def tic_tac_toe_checker(board: List[List]) -> str:
 
 
 if __name__ == "__main__":
-    some_board = [["-", "-", "o"], ["-", "x", "o"], ["x", "o", "x"]]
-
-    print(tic_tac_toe_checker(some_board))
-    print()
+    pass

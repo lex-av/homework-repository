@@ -35,8 +35,7 @@ class KeyValueStorage:
 
         with open(filepath) as source:
             for line in source:
-                # Here will be A LOT of logic
-                key, value = tuple(line.strip().split("="))
+                key, value = line.strip().split("=")
                 try:
                     hash(key)
                     try:

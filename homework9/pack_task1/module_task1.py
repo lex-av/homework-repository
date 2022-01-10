@@ -21,45 +21,23 @@ from pathlib import Path
 from typing import Iterator, List, Union
 
 
-class MergingIterator:
-    """
-    Iterator to handle merging of sorted files, containing ints.
-    Needs a list of str-paths as input.
-    Does not read entire files in memory.
-    Closes files automatically
-    """
+def file_read(path: str) -> List[int]:
+    """Reads file lines into list"""
 
-    @staticmethod
-    def _file_read(path: str) -> List[int]:
-        """Reads file lines into list"""
+    output_list = []
+    with open(path) as src:
+        for line in src:
+            try:
+                output_list.append(int(line.strip()))
+            except ValueError:
+                pass
 
-        output_list = []
-        with open(path) as src:
-            for line in src:
-                try:
-                    output_list.append(int(line.strip()))
-                except ValueError:
-                    pass
-
-        return output_list
-
-    def __init__(self, file_names_list):
-        self.file_names_list = file_names_list
-        self.file_values_lists = [self._file_read(file_name) for file_name in file_names_list]
-        self.resulting_iterator = iter(merge(*self.file_values_lists))
-
-    def __next__(self):
-        try:
-            return next(self.resulting_iterator)
-        except StopIteration:
-            raise StopIteration
-
-    def __iter__(self):
-        return self
+    return output_list
 
 
 def merge_sorted_files(file_list: List[Union[Path, str]]) -> Iterator:
-    return MergingIterator(file_list)
+    file_values_lists = [file_read(file_name) for file_name in file_list]
+    return iter(merge(*file_values_lists))
 
 
 if __name__ == "__main__":

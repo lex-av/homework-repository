@@ -16,6 +16,7 @@ list(merge_sorted_files(["task1_file1.txt", "task1_file2.txt"]))
 """
 
 
+from heapq import merge
 from pathlib import Path
 from typing import Iterator, List, Union
 
@@ -28,47 +29,30 @@ class MergingIterator:
     Closes files automatically
     """
 
+    @staticmethod
+    def _file_read(path: str) -> List[int]:
+        """Reads file lines into list"""
+
+        output_list = []
+        with open(path) as src:
+            for line in src:
+                try:
+                    output_list.append(int(line.strip()))
+                except ValueError:
+                    pass
+
+        return output_list
+
     def __init__(self, file_names_list):
         self.file_names_list = file_names_list
-        self.file_objects = [open(file_name) for file_name in file_names_list]
-        self.file_objects_values = []
-
-        """
-            file_objects and file_objects_values are synchronised lists.
-            Used them instead dict for more flexibility.
-        """
-
-        for opened_file in self.file_objects:
-            try:
-                self.file_objects_values.append(int(next(opened_file)))
-
-            except StopIteration:
-                opened_file.close()
+        self.file_values_lists = [self._file_read(file_name) for file_name in file_names_list]
+        self.resulting_iterator = iter(merge(*self.file_values_lists))
 
     def __next__(self):
         try:
-            next_to_merge = min(self.file_objects_values)
-        except ValueError:
-            """
-            Value error is raised, when file_objects_values is empty.
-            This means, that iteration should be stopped.
-            So, StopIteration
-            """
-            raise StopIteration
-
-        # Narrow point here: index search only first appearance. But so do min(). Indexes should be equal
-        file_object_index = self.file_objects_values.index(next_to_merge)
-
-        try:
-            self.file_objects_values[file_object_index] = int(next(self.file_objects[file_object_index]))
-            return next_to_merge
-
+            return next(self.resulting_iterator)
         except StopIteration:
-            # Synchronous lists editing here
-            self.file_objects[file_object_index].close()
-            self.file_objects.pop(file_object_index)
-            self.file_objects_values.pop(file_object_index)
-            return next_to_merge
+            raise StopIteration
 
     def __iter__(self):
         return self
@@ -79,7 +63,7 @@ def merge_sorted_files(file_list: List[Union[Path, str]]) -> Iterator:
 
 
 if __name__ == "__main__":
-    merge_iter = merge_sorted_files(["file1.txt"])
+    merge_iter = merge_sorted_files(["file1.txt", "file2.txt"])
 
     merged_lst = [i for i in merge_iter]
-    print()
+    print(merged_lst)

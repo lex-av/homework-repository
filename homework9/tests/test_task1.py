@@ -2,7 +2,7 @@
 
 import os
 
-from ..pack_task1.module_task1 import merge_sorted_files
+from homework9.pack_task1.module_task1 import merge_sorted_files
 
 
 def test_positive_read_one_file():

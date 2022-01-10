@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+
 from homework7.pack_task1.module_task1 import find_occurrences_v1
 
 example_tree = {

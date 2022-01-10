@@ -19,10 +19,11 @@ from typing import List, Tuple
 
 
 def major_and_minor_elem(inp: List) -> Tuple[int, int]:
-    major_elem: int = Counter(inp).most_common()[0][0]
-    minor_elem: int = Counter(inp).most_common()[1][0]
+    elements = Counter(inp).most_common()
+    major_elem: int = elements[0][0]
+    minor_elem: int = elements[1][0]
     return major_elem, minor_elem
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print(major_and_minor_elem([2, 2, 1, 1, 1, 2, 2]))

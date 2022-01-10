@@ -4,7 +4,7 @@ import os
 
 import pytest
 
-from ..pack_task2.module_task2 import TableData
+from homework8.pack_task2.module_task2 import TableData
 
 
 def test_positive_len():

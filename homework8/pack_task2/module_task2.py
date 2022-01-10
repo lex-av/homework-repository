@@ -11,6 +11,21 @@ import sqlite3
 class TableData:
     """Data container for database files"""
 
+    class Decorators:
+        """Storage for connection handler for its proper work"""
+
+        @classmethod
+        def _db_connection_handler(cls, method):
+            """Handles db connection for decorated method"""
+
+            def wrapper(self, *args):
+                conn = sqlite3.connect(self.database_name)
+                result = method(self, *args, conn)
+                conn.close()
+                return result
+
+            return wrapper
+
     def _get_table_columns(self):
         conn = sqlite3.connect(self.database_name)
         cursor = conn.cursor()
@@ -42,8 +57,8 @@ class TableData:
         self.current_row = 0
         self.last_row = 0
 
-    def __contains__(self, item):
-        conn = sqlite3.connect(self.database_name)
+    @Decorators._db_connection_handler
+    def __contains__(self, item, conn):
         cursor = conn.cursor()
         search_column = self._get_table_columns()[0]
         table_name = self._scrub(self.table_name)
@@ -55,8 +70,8 @@ class TableData:
             return True
         return False
 
-    def __getitem__(self, item):
-        conn = sqlite3.connect(self.database_name)
+    @Decorators._db_connection_handler
+    def __getitem__(self, item, conn):
         cursor = conn.cursor()
         search_column = self._get_table_columns()[0]
         table_name = self._scrub(self.table_name)
@@ -71,15 +86,14 @@ class TableData:
         else:
             raise ValueError
 
-    def __next__(self):
+    @Decorators._db_connection_handler
+    def __next__(self, conn):
         self.last_row = self._current_table_len()
 
         if self.current_row < self.last_row:
-            conn = sqlite3.connect(self.database_name)
             cursor = conn.cursor()
             cursor.execute("SELECT * from " + self._scrub(self.table_name) + " LIMIT 1 OFFSET " + str(self.current_row))
             table_row = cursor.fetchall()[0]
-            conn.close()
             self.current_row += 1
 
             return table_row
@@ -90,12 +104,11 @@ class TableData:
     def __iter__(self):
         return self
 
-    def __len__(self):
-        conn = sqlite3.connect(self.database_name)
+    @Decorators._db_connection_handler
+    def __len__(self, conn):
         cursor = conn.cursor()
         cursor.execute("SELECT COUNT(*) from " + self._scrub(self.table_name))
         table_len = cursor.fetchone()[0]
-        conn.close()
 
         return table_len
 

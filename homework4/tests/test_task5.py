@@ -5,9 +5,9 @@ import pytest
 from homework4.pack_task5.module_task5 import fizzbuzz
 
 test_data = [
-    (3, ["1", "2", "fizz"]),
-    (5, ["1", "2", "fizz", "4", "buzz"]),
-    (15, ["1", "2", "fizz", "4", "buzz", "6", "fizz", "8", "buzz", "10", "fizz", "12", "buzz", "14", "fizzbuzz"]),
+    (3, ["1", "2", "Fizz"]),
+    (5, ["1", "2", "Fizz", "4", "Buzz"]),
+    (15, ["1", "2", "Fizz", "4", "Buzz", "Fizz", "7", "8", "Fizz", "Buzz", "11", "Fizz", "13", "14", "FizzBuzz"]),
 ]
 
 

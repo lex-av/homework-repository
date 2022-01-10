@@ -24,6 +24,9 @@ def fizzbuzz(n: int) -> List[str]:
     """
     Returns a list of fizzbuzz numbers
 
+    >>> fizzbuzz(15)
+    ['1', '2', 'Fizz', '4', 'Buzz', 'Fizz', '7', '8', 'Fizz', 'Buzz', '11', 'Fizz', '13', '14', 'FizzBuzz']
+
     >>> fizzbuzz(5)
     ['1', '2', 'Fizz', '4', 'Buzz']
 
@@ -33,7 +36,11 @@ def fizzbuzz(n: int) -> List[str]:
     >>> fizzbuzz(3)
     ['1', '2', 'Fizz']
     """
+
     def fizzbuzz_replacer(num):
+
+        if num % 15 == 0:
+            return "FizzBuzz"
         if num % 3 == 0:
             return "Fizz"
         if num % 5 == 0:
@@ -47,5 +54,5 @@ def fizzbuzz(n: int) -> List[str]:
     return fizzbuzz_numbers
 
 
-if __name__ == '__main__':
-    print(fizzbuzz(5))
+if __name__ == "__main__":
+    pass

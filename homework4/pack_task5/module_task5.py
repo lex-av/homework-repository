@@ -18,18 +18,20 @@ from typing import Generator
 
 
 def fizzbuzz(n: int) -> Generator:
-    map_table = {}
-    n += 1
-    for i in range(1, n):
-        map_table[i] = i
-    for i in range(3, n, 2):
-        map_table[i] = "fizz"
-    for i in range(5, n, 4):
-        map_table[i] = "buzz"
-    for i in range(15, n, 15):
-        map_table[i] = "fizzbuzz"
 
-    for _, value in map_table.items():
+    fizz_buzz_lst = []
+    n += 1
+
+    for num in range(1, n):
+        fizz_buzz_lst.append(num)
+    for num in range(3, n, 3):
+        fizz_buzz_lst[num - 1] = "Fizz"
+    for num in range(5, n, 5):
+        fizz_buzz_lst[num - 1] = "Buzz"
+    for num in range(15, n, 15):
+        fizz_buzz_lst[num - 1] = "FizzBuzz"
+
+    for value in fizz_buzz_lst:
         yield str(value)
 
 

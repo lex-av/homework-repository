@@ -21,12 +21,12 @@ You will learn:
 * https://docs.python.org/3/library/urllib.request.html#urllib.request.urlopen
 """
 
-
+import http.client
 import urllib.request
 from collections import Counter
 
 
-def get_url_response(_url: str) -> urllib.request.urlopen:  # Is it even legal?
+def get_url_response(_url: str) -> http.client.HTTPResponse:
     return urllib.request.urlopen(_url)
 
 

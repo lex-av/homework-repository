@@ -17,9 +17,8 @@ from typing import Callable, Optional
 def universal_file_counter(dir_path: Path, file_extension: str, tokenizer: Optional[Callable] = None) -> int:
     """Function to count lines in files with given extension or tokenizer"""
 
-    dir_path = dir_path.glob("**/*")
+    dir_path = dir_path.glob(f"**/*.{file_extension}")
     file_list = [file for file in dir_path if file.is_file()]
-    file_list = [file for file in file_list if file.suffix[1:] == file_extension]
     counter = 0
 
     for file in file_list:

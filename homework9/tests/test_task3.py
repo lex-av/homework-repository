@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from ..pack_task3.module_task3 import universal_file_counter
+from homework9.pack_task3.module_task3 import universal_file_counter
 
 
 def test_positive_no_tokens():

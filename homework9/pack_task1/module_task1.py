@@ -37,7 +37,7 @@ def file_read(path: str) -> List[int]:
 
 def merge_sorted_files(file_list: List[Union[Path, str]]) -> Iterator:
     file_values_lists = [file_read(file_name) for file_name in file_list]
-    return iter(merge(*file_values_lists))
+    yield from merge(*file_values_lists)
 
 
 if __name__ == "__main__":

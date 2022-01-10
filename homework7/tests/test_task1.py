@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-
-from ..pack_task1.module_task1 import find_occurrences
+from homework7.pack_task1.module_task1 import find_occurrences_v1
 
 example_tree = {
     "first": ["RED", "BLUE"],
@@ -38,19 +37,19 @@ nested_cases = [
 
 
 def test_positive_on_example_tree():
-    assert find_occurrences(example_tree, "RED") == 6
+    assert find_occurrences_v1(example_tree, "RED") == 6
 
 
 @pytest.mark.parametrize("tree, elem_to_search, output", single_elemets)
 def test_positive_single_elements(tree, elem_to_search, output):
-    assert find_occurrences(tree, elem_to_search) == output
+    assert find_occurrences_v1(tree, elem_to_search) == output
 
 
 @pytest.mark.parametrize("tree, elem_to_search, output", strings_with_multiple_elem_to_search)
 def test_positive_strings_with_multiple_elem_to_search(tree, elem_to_search, output):
-    assert find_occurrences(tree, elem_to_search) == output
+    assert find_occurrences_v1(tree, elem_to_search) == output
 
 
 @pytest.mark.parametrize("tree, elem_to_search, output", nested_cases)
 def test_positive_nested_cases(tree, elem_to_search, output):
-    assert find_occurrences(tree, elem_to_search) == output
+    assert find_occurrences_v1(tree, elem_to_search) == output

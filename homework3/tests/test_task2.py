@@ -2,7 +2,7 @@
 
 import time
 
-from homework3.pack_task2.module_task2 import MultiWorker
+from homework3.pack_task2.module_task2 import launch
 
 data = [i for i in range(500)]
 
@@ -18,5 +18,5 @@ def timing_decorator(func):
 
 
 def test_one_minute():
-    slow_calculate = timing_decorator(MultiWorker.multiprocess_calculate)
+    slow_calculate = timing_decorator(launch)
     assert slow_calculate(data) < 60

@@ -23,18 +23,12 @@ from multiprocessing.pool import Pool
 from homework3.pack_task2.worker import slow_calculate
 
 
-class MultiWorker:
-    """Outer class for multiprocessing job"""
+def launch(iterable):
+    with Pool(48) as p:
+        output = p.map(slow_calculate, iterable)
 
-    @staticmethod
-    def multiprocess_calculate(input_data):
-        with Pool(48) as p:
-            output = p.map(slow_calculate, input_data)
-
-        return output
+    return output
 
 
 if __name__ == "__main__":
-
-    print(*MultiWorker.multiprocess_calculate([i for i in range(500)]))
-    print("ready")
+    pass

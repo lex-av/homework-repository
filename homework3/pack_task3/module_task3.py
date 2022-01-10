@@ -4,17 +4,15 @@
 
 class Filter:
     """
-        Helper filter class. Accepts a list of single-argument
-        functions that return True if object in list conforms to some criteria
+    Helper filter class. Accepts a list of single-argument
+    functions that return True if object in list conforms to some criteria
     """
+
     def __init__(self, functions):
         self.functions = functions
 
     def apply(self, data):
-        return [
-            item for item in data
-            if all(i(item) for i in self.functions)
-        ]
+        return [item for item in data if all(i(item) for i in self.functions)]
 
 
 # example of usage:
@@ -24,34 +22,30 @@ class Filter:
 
 def make_filter(**keywords):
     """
-        Generate filter object for specified keywords
+    Generate filter object for specified keywords
     """
     filter_funcs = []
     for key, value in keywords.items():
+
         def keyword_filter_func(data):
-            # return _value[key] == value
             if key in data:
                 return data[key] == value
 
             return False
+
         filter_funcs.append(keyword_filter_func)
 
     return Filter(filter_funcs)
 
 
 sample_data = [
-     {
-         "name": "Bill",
-         "last_name": "Gilbert",
-         "occupation": "was here",
-         "type": "person",
-     },
-     {
-         "is_dead": True,
-         "kind": "parrot",
-         "type": "bird",
-         "name": "polly"
-     }
+    {
+        "name": "Bill",
+        "last_name": "Gilbert",
+        "occupation": "was here",
+        "type": "person",
+    },
+    {"is_dead": True, "kind": "parrot", "type": "bird", "name": "polly"},
 ]
 
 # make_filter(name='polly', type='bird').apply(sample_data_1) should return only second entry from the list
@@ -59,6 +53,5 @@ sample_data = [
 # There are multiple bugs in this code. Find them all and write tests for faulty cases.
 
 
-if __name__ == '__main__':
-    print(make_filter(namee='Bill').apply(sample_data))
-    print(make_filter(name='polly', type='bird').apply(sample_data))
+if __name__ == "__main__":
+    pass

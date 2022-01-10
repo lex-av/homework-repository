@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-
-from ..pack_task2.module_task2 import backspace_compare
+from homework7.pack_task2.module_task2 import backspace_compare
 
 positive_tst_data = [
     ("ab#c", "ad#c", True),

@@ -29,60 +29,29 @@ dot notation?
 
 """
 
-
-import re
-from collections import namedtuple
+from typing import Generator
 
 
-def backspace_compare(first: str, second: str):
-    """
-    Returns True is two strings are equal when both are
-    typed into empty text editors. # means a backspace character.
-    """
+def backspace_compare(first: str, second: str) -> bool:
+    """Using generator logic to transform"""
 
-    def eraser(input_str):
-        """Function to delete all backspace and erased chars from original str"""
-        input_str = input_str.lstrip("#")
-        input_str_listed = [char for char in input_str]
+    def erasing_generator(reversed_str: str) -> Generator:
+        """Yields input reversed_str char by char"""
 
-        BackspaceIndexes = namedtuple("BackspaceIndexes", "start end")  # Holds #'s occurrences
-        backspace_occurrences = [BackspaceIndexes._make([m.start(0), m.end(0)]) for m in re.finditer(r"#+", input_str)]
+        # Accumulator for #
+        sharp_counter = 0
 
-        pop_indexes = set()
-        new_str_listed = []
+        for char in list(reversed_str):
+            if char == "#":
+                sharp_counter += 1
 
-        for occurrence in backspace_occurrences:
-            # Calculate the zone, that should be erased
-            backspace_count = occurrence.end - occurrence.start
-            current_index = occurrence.end - 1
-            left_border = occurrence.end - (2 * backspace_count) - 1
+            if char != "#" and sharp_counter == 0:
+                yield char
+            elif sharp_counter != 0 and char != "#":
+                sharp_counter -= 1
 
-            # Calculate indexes in erase-zone
-            while current_index >= 0 and current_index != left_border:
-                pop_indexes.add(current_index)
-                current_index -= 1
-
-        # Build new str without symbols in erase-zones
-        for index, _ in enumerate(input_str_listed):
-            if index not in pop_indexes:
-                new_str_listed.append(input_str_listed[index])
-
-        return "".join(new_str_listed)
-
-    return eraser(first) == eraser(second)
+    return "".join(erasing_generator(first[::-1])) == "".join(erasing_generator(second[::-1]))
 
 
 if __name__ == "__main__":
-    s = "ab#c"
-    t = "ad#c"
-    print(backspace_compare(s, t))
-
-    s = "a##c"
-    t = "#a#c"
-    print(backspace_compare(s, t))
-
-    s = "a##c"
-    t = "########a#c"
-    print(backspace_compare(s, t))
-
-    print()
+    pass

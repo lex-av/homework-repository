@@ -15,7 +15,7 @@ from io import TextIOWrapper
 from typing import AnyStr, Generator, Sequence, TextIO, Union
 
 
-def custom_range(iterable: Union[Sequence, TextIO], *args: Union[int, AnyStr]) -> Generator:
+def custom_range(iterable: Union[Sequence, TextIO], *args: Union[int, AnyStr, None]) -> Generator:
     """
     Behaves as extended range
     On top of range base functional:
@@ -47,7 +47,7 @@ def custom_range(iterable: Union[Sequence, TextIO], *args: Union[int, AnyStr]) -
         if type(start) != type(stop):
             raise TypeError("Start and stop should be one type")
 
-    if isinstance(step, str):
+    if not isinstance(step, int) and step is not None:  # NoneType is valid value for step for slice()
         raise TypeError("Wrong type for step parameter")
 
     # Container for slicing parameters

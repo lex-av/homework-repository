@@ -45,6 +45,7 @@ PEP8 соблюдать строго.
 
 import datetime
 from collections import defaultdict
+from typing import List
 
 
 class HomeworkObjectException(Exception):
@@ -71,6 +72,17 @@ class Student(Person):
             return HomeworkResult(self, homework, student_solution)
         raise DeadlineException("You are late")
 
+    def request_homeworks(self, rating: int) -> List:
+        """Returns list of completed homeworks for this student"""
+
+        homeworks = []
+        for homework_results in Teacher.homework_done.values():
+            for homework_result in homework_results:
+                if homework_result.rating == rating and homework_result.author == self:
+                    homeworks.append(homework_result)
+
+        return homeworks
+
 
 class Teacher(Person):
     """Class for teacher definition"""
@@ -82,8 +94,9 @@ class Teacher(Person):
         return Homework(text, deadline)
 
     @staticmethod
-    def check_homework(hw_result):
+    def check_homework(hw_result, rating):
         if len(hw_result.solution) > 5:
+            hw_result.rating = rating
             Teacher.homework_done[hw_result.homework].add(hw_result)
             return True
         return False
@@ -119,7 +132,7 @@ class HomeworkResult:
     Has to be returned by do_homework method in Student
     """
 
-    def __init__(self, author, homework, solution):
+    def __init__(self, author, homework, solution, rating=0):
         self.author = author
         if isinstance(homework, Homework):
             self.homework = homework
@@ -127,6 +140,7 @@ class HomeworkResult:
             raise HomeworkObjectException("You gave a not Homework object")
         self.solution = solution
         self.created = homework.created
+        self.rating = rating
 
 
 if __name__ == "__main__":
@@ -150,15 +164,15 @@ if __name__ == "__main__":
     #     result_4 = HomeworkResult(good_student, "fff", "Solution")
     # except Exception:
     #     print('There was an exception here')
-    opp_teacher.check_homework(result_1)
+    opp_teacher.check_homework(result_1, 5)
     # temp_1 = opp_teacher.homework_done
     #
     # advanced_python_teacher.check_homework(result_1)
     # temp_2 = Teacher.homework_done
     # assert temp_1 == temp_2
     #
-    opp_teacher.check_homework(result_2)
-    opp_teacher.check_homework(result_3)
+    opp_teacher.check_homework(result_2, 5)
+    opp_teacher.check_homework(result_3, 2)
 
     print(Teacher.homework_done[oop_hw])
     # Teacher.reset_results()

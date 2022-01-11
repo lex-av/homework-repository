@@ -42,8 +42,10 @@ PEP8 соблюдать строго.
 давать логичные подходящие имена.
 """
 
+
 import datetime
 from collections import defaultdict
+from random import choices
 
 
 class HomeworkObjectException(Exception):
@@ -65,6 +67,15 @@ class Person:
 class Student(Person):
     """Class for student definition"""
 
+    @staticmethod
+    def chance_of_success(probability: float) -> bool:
+        """
+        Returns true with given probability/chance.
+        probability = 0.8 means 80% for True and 20% for False
+        """
+
+        return choices((True, False), (probability, 1 - probability))[0]
+
     def do_homework(self, homework, student_solution):
         if homework.is_active():
             return HomeworkResult(self, homework, student_solution)
@@ -76,16 +87,19 @@ class Teacher(Person):
 
     homework_done = defaultdict(set)
 
-    def create_homework(self, text, deadline):
+    @staticmethod
+    def create_homework(text, deadline):
         return Homework(text, deadline)
 
-    def check_homework(self, hw_result):
+    @staticmethod
+    def check_homework(hw_result):
         if len(hw_result.solution) > 5:
             Teacher.homework_done[hw_result.homework].add(hw_result)
             return True
         return False
 
-    def reset_results(self, homework=None):
+    @staticmethod
+    def reset_results(homework=None):
         if homework is None:
             Teacher.homework_done = defaultdict(set)
         else:

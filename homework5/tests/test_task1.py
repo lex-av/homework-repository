@@ -52,3 +52,23 @@ def test_student_do_non_active_homework(freezer):
     hw_result = student.do_homework(new_homework)
 
     assert hw_result is None
+
+
+def test_positive_student_fail():
+    """Checks that result of doing active homework isn't none"""
+    teacher = Teacher("Daniil", "Shadrin")
+    new_homework = teacher.create_homework("New homework: do it", 2)
+    student = Student("Roman", "Petrov")
+    hw_result = student.do_homework(new_homework, chance=0)
+
+    assert hw_result is None
+
+
+def test_positive_student_comment():
+    """Checks that result of doing active homework isn't none"""
+    teacher = Teacher("Daniil", "Shadrin")
+    new_homework = teacher.create_homework("New homework: do it", 2)
+    student = Student("Roman", "Petrov")
+    hw_result = student.do_homework(new_homework, comment="Nice", chance=1)
+
+    assert hw_result.comment == "Nice"

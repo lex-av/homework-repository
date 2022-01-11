@@ -55,10 +55,11 @@ class Student:
         probability = 0.8 means 80% for True and 20% for False
         Always returns True if probability is None or if helper is True
         """
-        if probability > 1:  # Normalisation and error avoiding
-            probability = 1
 
-        if probability and not helper:
+        if probability is not None and not helper:
+            if probability > 1:  # Normalisation and error avoiding
+                probability = 1
+
             return choices((True, False), (probability, 1 - probability))[0]
         else:
             return True
@@ -71,7 +72,7 @@ class Student:
                     homework.comment = comment
                 return homework
 
-        print("You are late")
+        print("You failed")
         return None
 
 

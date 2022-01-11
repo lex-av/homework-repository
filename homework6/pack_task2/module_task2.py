@@ -45,7 +45,6 @@ PEP8 соблюдать строго.
 
 import datetime
 from collections import defaultdict
-from random import choices
 
 
 class HomeworkObjectException(Exception):
@@ -66,15 +65,6 @@ class Person:
 
 class Student(Person):
     """Class for student definition"""
-
-    @staticmethod
-    def chance_of_success(probability: float) -> bool:
-        """
-        Returns true with given probability/chance.
-        probability = 0.8 means 80% for True and 20% for False
-        """
-
-        return choices((True, False), (probability, 1 - probability))[0]
 
     def do_homework(self, homework, student_solution):
         if homework.is_active():

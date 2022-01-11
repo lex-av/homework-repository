@@ -71,7 +71,7 @@ def test_positive_homework_done_add_hw():
     good_student = Student("Lev", "Sokolov")
     oop_hw = opp_teacher.create_homework("Learn OOP", 1)
     result_1 = good_student.do_homework(oop_hw, "I have done this hw")
-    opp_teacher.check_homework(result_1)
+    opp_teacher.check_homework(result_1, 5)
 
     # Here we unpack set of results for homework to list and check if first one is HomeworkResult
     assert isinstance(list(Teacher.homework_done[oop_hw])[0], HomeworkResult)
@@ -87,7 +87,7 @@ def test_positive_homework_done_remove_hw():
     good_student = Student("Lev", "Sokolov")
     oop_hw_1 = opp_teacher.create_homework("Learn OOP", 1)
     result_1 = good_student.do_homework(oop_hw_1, "I have done this hw")
-    opp_teacher.check_homework(result_1)
+    opp_teacher.check_homework(result_1, 5)
     opp_teacher.reset_results()
 
     assert not list(Teacher.homework_done[oop_hw_1])
@@ -103,7 +103,27 @@ def test_positive_homework_done_remove_specific_hw():
     good_student = Student("Lev", "Sokolov")
     oop_hw_1 = opp_teacher.create_homework("Learn OOP", 1)
     result_1 = good_student.do_homework(oop_hw_1, "I have done this hw")
-    opp_teacher.check_homework(result_1)
+    opp_teacher.check_homework(result_1, 5)
     opp_teacher.reset_results(oop_hw_1)
 
     assert not list(Teacher.homework_done[oop_hw_1])
+
+
+def test_positive_request_homework_done():
+    """Request student's hw results by marks"""
+
+    opp_teacher = Teacher("Daniil", "Shadrin")
+    good_student = Student("Lev", "Sokolov")
+
+    oop_hw_1 = opp_teacher.create_homework("Learn OOP", 1)
+    oop_hw_2 = opp_teacher.create_homework("Learn OOP", 1)
+
+    result_1 = good_student.do_homework(oop_hw_1, "I have done this hw")
+    result_2 = good_student.do_homework(oop_hw_2, "I have done this hw")
+
+    opp_teacher.check_homework(result_1, 5)
+    opp_teacher.check_homework(result_2, 5)
+
+    ratings = [hw.rating for hw in good_student.request_homeworks(5)]
+
+    assert ratings == [5, 5]

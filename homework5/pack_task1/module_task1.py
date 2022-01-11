@@ -37,6 +37,8 @@ PEP8 соблюдать строго.
 
 import datetime
 import time
+from random import choices
+from typing import Union
 
 
 class Student:
@@ -46,11 +48,29 @@ class Student:
         self.last_name = last_name
         self.first_name = first_name
 
-    def do_homework(self, homework, comment=None):
+    @staticmethod
+    def chance_of_success(probability: Union[float, None], helper: bool = False) -> bool:
+        """
+        Returns true with given probability/chance.
+        probability = 0.8 means 80% for True and 20% for False
+        Always returns True if probability is None or if helper is True
+        """
+        if probability > 1:  # Normalisation and error avoiding
+            probability = 1
+
+        if probability and not helper:
+            return choices((True, False), (probability, 1 - probability))[0]
+        else:
+            return True
+
+    def do_homework(self, homework, comment=None, chance=None, helper=False):
+        """Supports hw execution with chance and with helper"""
         if homework.is_active():
-            if comment:
-                homework.comment = comment
-            return homework
+            if self.chance_of_success(chance, helper):
+                if comment:
+                    homework.comment = comment
+                return homework
+
         print("You are late")
         return None
 

@@ -34,6 +34,7 @@ PEP8 соблюдать строго.
 К названием остальных переменных, классов и тд. подходить ответственно -
 давать логичные подходящие имена.
 """
+
 import datetime
 import time
 
@@ -45,8 +46,10 @@ class Student:
         self.last_name = last_name
         self.first_name = first_name
 
-    def do_homework(self, homework):
+    def do_homework(self, homework, comment=None):
         if homework.is_active():
+            if comment:
+                homework.comment = comment
             return homework
         print("You are late")
         return None
@@ -71,6 +74,7 @@ class Homework:
         self.text = text
         self.deadline = deadline
         self.created = datetime.datetime.now()
+        self.comment = None
 
     def is_active(self):
         """Checks if homework task is still active and deadline isn't expired'"""

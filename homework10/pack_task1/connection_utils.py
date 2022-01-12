@@ -4,12 +4,12 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def float_normalizer(value_in_str):
-    if "," in value_in_str:
-        lst_repr = value_in_str.strip("%").split(",")
+def float_normalizer(value: str) -> float:
+    if "," in value:
+        lst_repr = value.strip("%").split(",")
         return float("".join(lst_repr))
 
-    return float(value_in_str.strip("%"))
+    return float(value.strip("%"))
 
 
 def get_base_response_text(url="https://markets.businessinsider.com/index/components/s&p_500"):

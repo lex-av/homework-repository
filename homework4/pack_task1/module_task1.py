@@ -31,17 +31,14 @@ def read_magic_number(path: str) -> bool:
     """
 
     try:
-        src = open(path)
-    except Exception:
-        raise ValueError("Wrong file path")
-
-    first_line = src.readline()
-    try:
-        num = int(first_line)
-    except Exception:
-        src.close()
+        with open(path) as src:
+            first_line = src.readline()
+            try:
+                num = int(first_line)
+            except TypeError:
+                raise ValueError("Wrong file first line")
+    except FileNotFoundError:
         raise ValueError("Wrong file first line")
-    src.close()
 
     return 1 <= num < 3
 

@@ -9,7 +9,6 @@
 
 import asyncio
 import json
-import time
 from multiprocessing import Pool
 
 import aiohttp
@@ -36,6 +35,7 @@ class MarketsInsiderRawData:
     def __init__(self, fixed_page_count=None):
         self.fixed_page_count = fixed_page_count
 
+    def collect_info(self):
         self.base_resp_text = get_base_response_text()
         self.page_count = get_page_count(self.base_resp_text, self.fixed_page_count)
         self.page_links = get_page_links(self.page_count)
@@ -109,17 +109,6 @@ class CorpDataParser:
             self.pe_vals = p.map(corp_pe_parse, self.details_text_data)
             self.corp_max_profit_vals = p.map(corp_max_profit_parse, self.details_text_data)
 
-        # with Pool(self.cpu_count) as p:
-        #     self.corp_codes = p.map(pu.corp_code_parse, self.details_text_data)
-        # with Pool(self.cpu_count) as p:
-        #     self.corp_prices = p.starmap(
-        #         pu.corp_price_parse, zip(self.details_text_data, [self.rub_rate] * len(self.details_text_data))
-        #     )
-        # with Pool(self.cpu_count) as p:
-        #     self.pe_vals = p.map(pu.corp_pe_parse, self.details_text_data)
-        # with Pool(self.cpu_count) as p:
-        #     self.corp_max_profit_vals = p.map(pu.corp_max_profit_parse, self.details_text_data)
-
     def build_data_table(self):
         for name, code, price, pe, max_profit, growth in zip(
             self.corp_names,
@@ -166,26 +155,4 @@ class CorpDataParser:
 
 
 if __name__ == "__main__":
-    start = time.time()
-    raw_data = MarketsInsiderRawData()
-    end = time.time() - start
-    print(end)
-
-    start = time.time()
-    table_data = CorpDataParser(raw_data.details_text_data, raw_data.growth_values)
-    table_data.compute_data()
-    table_data.build_data_table()
-    end = time.time() - start
-    print(end)
-
-    top_price = table_data.generate_top("price", length=10)
-    top_low_pe = table_data.generate_top("PE", rev=False, length=10)
-    top_growth = table_data.generate_top("growth", length=10)
-    top_max_profit = table_data.generate_top("max_profit", length=10)
-
-    table_data.json_writer(top_price, "rep1_price")
-    table_data.json_writer(top_low_pe, "rep2_pe")
-    table_data.json_writer(top_growth, "rep3_growth")
-    table_data.json_writer(top_max_profit, "rep4_profit")
-
-    print()
+    pass

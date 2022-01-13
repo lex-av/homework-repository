@@ -56,7 +56,7 @@ class Student:
         Always returns True if probability is None or if helper is True
         """
 
-        if probability and not helper:
+        if probability is not None and not helper:
             if probability > 1:  # Normalisation and error avoiding
                 probability = 1
 
@@ -72,7 +72,7 @@ class Student:
                     homework.comment = comment
                 return homework
 
-        print("You are late")
+        print("You failed")
         return None
 
 

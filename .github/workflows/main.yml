@@ -18,5 +18,5 @@ jobs:
           pip install flake8 isort pytest pytest-freezegun
           ls -la
           flake8 .
-          isort --check .
+          isort --profile black --check .
           py.test -v

@@ -29,6 +29,23 @@ class KeyValueStorage:
 
     key_value_storage = {}
 
+    class Decorators:
+        """Storage for file_synchronizer for its proper work"""
+
+        @classmethod
+        def _file_synchronizer(cls, method):
+            """Rewrites file to sync with key-value storage"""
+
+            def wrapper(self, *args):
+                result = method(self, *args)
+                with open(self.filepath, "w") as src:
+                    for key, value in self.key_value_storage.items():
+                        src.write(f"{key}={value}\n")
+
+                return result
+
+            return wrapper
+
     def __init__(self, filepath):
         self.filepath = filepath
         self.keys_values_raw = []
@@ -48,6 +65,7 @@ class KeyValueStorage:
                 except TypeError:
                     raise ValueError("Wrong key")
 
+    @Decorators._file_synchronizer
     def __setitem__(self, key, value):
         self.key_value_storage[key] = value
 
@@ -55,8 +73,9 @@ class KeyValueStorage:
         if key in self.key_value_storage:
             return self.key_value_storage[key]
         else:
-            raise Exception("Key doesn't exist")
+            raise KeyError("Key doesn't exist")
 
+    @Decorators._file_synchronizer
     def __delitem__(self, key):
         if key in self.key_value_storage:
             del self.key_value_storage[key]

@@ -59,8 +59,8 @@ def merge_two_sorted_files(file1_path: str, file2_path: str) -> Iterator:
         file1 = src["file1"]
         file2 = src["file2"]
 
-        yield  # With no initial yield first number won't be yielded
         while True:
+            # Try to get next items from both files
             try:
                 num1 = int(next(file1).strip())
             except StopIteration:
@@ -70,7 +70,7 @@ def merge_two_sorted_files(file1_path: str, file2_path: str) -> Iterator:
                 num2 = int(next(file2).strip())
             except StopIteration:
                 file2 = None
-                yield num1  # If file2 is over, yield num1 before next loop
+                yield num1  # If file2 is over, yield num1 from file1 before next loop
                 break
 
             yield min(num1, num2)
@@ -87,13 +87,4 @@ def merge_two_sorted_files(file1_path: str, file2_path: str) -> Iterator:
 
 
 if __name__ == "__main__":
-
-    merge_iter_0 = merge_two_sorted_files("file1.txt", "file2.txt")
-
-    next(merge_iter_0)
-    merge_iter = merge_sorted_files(["file1.txt", "file2.txt"])
-
-    merged_lst = [i for i in merge_iter]
-
-    merged_lst1 = [i for i in merge_iter_0]
-    print(merged_lst)
+    pass

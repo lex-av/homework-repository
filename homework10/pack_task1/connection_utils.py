@@ -26,6 +26,7 @@ def get_page_count(response_text, fixed_page_count=None):
 
     soup = BeautifulSoup(response_text, "lxml")
     div_class = "finando_paging margin-top--small"
+    # This soup search leads to last sp500-list page number on web-page
     page_count = soup.find("div", class_=div_class).contents[19].contents[0]
 
     return int(page_count)

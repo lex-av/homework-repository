@@ -38,7 +38,13 @@ def growth_table():
 @pytest.fixture()
 def data_table_fixture():
     table = [
-        {"code": "MMM", "name": "3M Co. ", "price": 13238.36, "growth": 0.17, "PE": 19.91, "max_profit": 27.85},
+        {"code": "MMM", "name": "3M Co. ", "price": 13458.46, "growth": 0.17, "PE": 19.91, "max_profit": 27.85},
     ]
 
     return table
+
+
+@pytest.fixture()
+def fake_get_rate():
+    """Return valute rate for current date"""
+    return 76.86

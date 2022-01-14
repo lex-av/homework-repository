@@ -15,7 +15,7 @@ class TableData:
         """Storage for connection handler for its proper work"""
 
         @classmethod
-        def _db_connection_handler(cls, method):
+        def db_connection_handler(cls, method):
             """Handles db connection for decorated method"""
 
             def wrapper(self, *args):
@@ -57,7 +57,7 @@ class TableData:
         self.current_row = 0
         self.last_row = 0
 
-    @Decorators._db_connection_handler
+    @Decorators.db_connection_handler
     def __contains__(self, item, conn):
         cursor = conn.cursor()
         search_column = self._get_table_columns()[0]
@@ -70,7 +70,7 @@ class TableData:
             return True
         return False
 
-    @Decorators._db_connection_handler
+    @Decorators.db_connection_handler
     def __getitem__(self, item, conn):
         cursor = conn.cursor()
         search_column = self._get_table_columns()[0]
@@ -86,7 +86,23 @@ class TableData:
         else:
             raise ValueError
 
-    @Decorators._db_connection_handler
+    @Decorators.db_connection_handler
+    def __setitem__(self, key, value, conn):
+        """Allows to add data to tables in dict-manner"""
+        cursor = conn.cursor()
+        cursor.execute(
+            "insert into " + self._scrub(self.table_name) + " values (:key, :value)", {"key": key, "value": value}
+        )
+        conn.commit()
+
+    @Decorators.db_connection_handler
+    def __delitem__(self, key, conn):
+        """Allows to delete data from tables in dict-manner"""
+        cursor = conn.cursor()
+        cursor.execute("delete from " + self._scrub(self.table_name) + " where name=:key", {"key": key})
+        conn.commit()
+
+    @Decorators.db_connection_handler
     def __next__(self, conn):
         self.last_row = self._current_table_len()
 
@@ -104,7 +120,7 @@ class TableData:
     def __iter__(self):
         return self
 
-    @Decorators._db_connection_handler
+    @Decorators.db_connection_handler
     def __len__(self, conn):
         cursor = conn.cursor()
         cursor.execute("SELECT COUNT(*) from " + self._scrub(self.table_name))
@@ -123,4 +139,6 @@ if __name__ == "__main__":
         print(row)
 
     print(db_container["Farenheit 451"])
-    print()
+    db_container["Farenheit 452"] = "Non existent"
+    del db_container["Farenheit 452"]
+    print(db_container["Farenheit 451"])

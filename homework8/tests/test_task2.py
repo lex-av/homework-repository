@@ -41,3 +41,14 @@ def test_positive_contains():
     path_to_tests = os.getcwd()
     db_container = TableData(path_to_tests + "/homework8/tests/tst_data/example.sqlite", "books")
     assert "Farenheit 451" in db_container
+
+
+def test_positive_set_and_del_item():
+    path_to_tests = os.getcwd()
+    db_container = TableData(path_to_tests + "/homework8/tests/tst_data/example.sqlite", "books")
+
+    db_container["Farenheit 452"] = "Non existent"
+    del db_container["Farenheit 452"]
+
+    with pytest.raises(ValueError):
+        db_container["Farenheit 452"]

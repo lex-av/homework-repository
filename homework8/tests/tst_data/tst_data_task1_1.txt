@@ -1,0 +1,3 @@
+soft_name=new_sft
+ver=1.2
+int_num=54

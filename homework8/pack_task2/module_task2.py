@@ -130,15 +130,4 @@ class TableData:
 
 
 if __name__ == "__main__":
-    db_container = TableData("example.sqlite", "books")
-    db_container_iterator = iter(db_container)
-    for row in db_container:
-        print(row)
-
-    for row in db_container:
-        print(row)
-
-    print(db_container["Farenheit 451"])
-    db_container["Farenheit 452"] = "Non existent"
-    del db_container["Farenheit 452"]
-    print(db_container["Farenheit 451"])
+    pass

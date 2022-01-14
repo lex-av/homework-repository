@@ -87,7 +87,4 @@ class KeyValueStorage:
 
 
 if __name__ == "__main__":
-    new_storage = KeyValueStorage("data.txt")
-    new_storage["abc"] = 123
-
-    print()
+    pass
